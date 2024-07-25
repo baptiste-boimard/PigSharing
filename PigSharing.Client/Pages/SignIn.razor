@@ -1,0 +1,67 @@
+@page "/signin"
+
+@using System.Text
+@using System.Text.Json
+@using Blazored.LocalStorage
+@using PigSharing.Client.Models
+@using PigSharing.Server.Database.Models
+
+@inject HttpClient Client
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+
+<PageTitle>SignIn</PageTitle>
+
+<div class="register-page">
+    <h2>Login</h2>
+    <EditForm Model="Payload" OnValidSubmit="TryAuth">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <InputText id="username" @bind-Value="Payload.UserName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <InputText id="password" @bind-Value="Payload.Password" type="password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Se Connecter</button>
+        <button type="button" class="btn btn-primary" @onclick="CancelSignIn">Annuler</button>
+    </EditForm>
+</div>
+
+@code {
+
+    private Payload Payload = new();
+
+    private async Task TryAuth()
+    {
+        var content = new StringContent(
+            JsonSerializer.Serialize(Payload),
+            Encoding.UTF8,
+            "Application/json");
+        
+        var response = await Client.PostAsync("/api/auth/login", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var account = await response.Content.ReadFromJsonAsync<Account>();
+
+            if (account != null)
+            {
+                await LocalStorage.SetItemAsync("account", account);
+                Navigation.NavigateTo("/");
+            }
+        }
+
+    }
+    
+    
+
+    private void CancelSignIn()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+}

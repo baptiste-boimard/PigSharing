@@ -1,4 +1,16 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Text
+@using System.Text.Json
+@using Blazored.LocalStorage
+@using PigSharing.Server.Database.Models
+@using PigSharing.Share.Models
+
+@inject HttpClient Client
+@inject ILocalStorageService LocalStorage
+@inject User UserConnected
+@inject NavigationManager Navigation
+
+
+@inherits LayoutComponentBase
 <div class="page">
     <div class="sidebar">
         <NavMenu/>
@@ -6,7 +18,16 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            @if (!UserConnected.UserConnected)
+            {
+                <a href="/register">S'incrire</a> 
+                <a href="/signin">Se Connecter</a>
+
+            } else {
+                <a href="/register" @onclick="Logout">Se déconnecter</a>
+                <a href="/" @onclick="DeleteUser">Supprimer votre compte</a>
+
+            }
         </div>
 
         <article class="content px-4">
@@ -14,3 +35,62 @@
         </article>
     </main>
 </div>
+
+@code
+{
+    
+    protected override async Task OnParametersSetAsync() {
+        
+        var account = await LocalStorage.GetItemAsync<Account>("account");
+        
+        if (account != null)
+        {
+            UserConnected.UserConnected = true;
+            StateHasChanged();
+        }
+        else
+        {
+            UserConnected.UserConnected = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("account");
+        UserConnected.UserConnected = false;
+        Navigation.NavigateTo("/");
+    }
+
+    private async Task DeleteUser()
+    {
+        var account = await LocalStorage.GetItemAsync<Account>("account");
+
+        if (account != null)
+        {
+            var content = new StringContent(
+                JsonSerializer.Serialize(account.ConnectionToken),
+                Encoding.UTF8,
+                "application/json");
+
+            var id = account.ConnectionToken; 
+            
+            // var response = await Client.DeleteAsync($"/api/auth/deleteuser/{id}");
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/auth/deleteuser")
+            {
+                Content = content
+            };
+
+            var response = await Client.SendAsync(request);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                await LocalStorage.RemoveItemAsync("account");
+                UserConnected.UserConnected = false;
+                Navigation.NavigateTo("/");
+                StateHasChanged();
+            }
+        }
+    }
+    
+}

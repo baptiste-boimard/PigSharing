@@ -1,0 +1,62 @@
+@page "/register"
+@inject HttpClient Client
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+@using System.Text
+@using System.Text.Json
+@using Blazored.LocalStorage
+@using PigSharing.Client.Models
+@using PigSharing.Server.Database.Models
+
+<PageTitle>Register</PageTitle>
+
+<div class="register-page">
+    <h2>Register</h2>
+    <EditForm Model="Payload" OnValidSubmit="TryRegister">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <InputText id="username" @bind-Value="Payload.UserName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <InputText id="password" @bind-Value="Payload.Password" type="password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">S'incrire</button>
+        <button type="button" class="btn btn-primary" @onclick="CancelRegister">Annuler</button>
+    </EditForm>
+</div>
+
+@code
+{
+    private Payload Payload = new();
+    
+    private async Task TryRegister()
+    {
+        var content = new StringContent(
+            JsonSerializer.Serialize(Payload),
+            Encoding.UTF8,
+            "Application/json");
+        
+        var response = await Client.PostAsync("/api/auth/register", content);
+
+        
+        if (response.IsSuccessStatusCode)
+        {
+            var account = await response.Content.ReadFromJsonAsync<Account>();
+
+            if (account != null)
+            {
+                await LocalStorage.SetItemAsync("account", account);
+                Navigation.NavigateTo("/");
+            }
+        }
+    }
+    
+    public void CancelRegister()
+    {
+        Navigation.NavigateTo("/");
+    }
+}
