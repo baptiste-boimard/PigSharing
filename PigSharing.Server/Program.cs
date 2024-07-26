@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Microsoft.EntityFrameworkCore;
 using PigSharing.Server.Database;
 using PigSharing.Server.Repositories;
+using PigSharing.Server.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +13,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
-// // Ajout de BlazoredLocalStorage
-// builder.Services.AddBlazoredLocalStorage();
-
 // Ajout des repositories
 builder.Services.AddScoped<AuthRepository>();
+builder.Services.AddScoped<PictureRepository>();
+
+// Ajout du service de photo
+builder.Services.AddScoped<PictureService>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 // Service de la Base de données
 builder.Services.AddDbContext<PostgresDbContext>(options =>

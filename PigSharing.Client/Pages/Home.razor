@@ -1,7 +1,88 @@
 ﻿@page "/"
+@using System.Net.Http.Headers
+@using Blazored.LocalStorage
+@using PigSharing.Server.Database.Models
+@using PigSharing.Share.Models
+@using Microsoft.JSInterop
+
+
+@inject User UserConnected
+@inject NavigationManager Navigation
+@inject HttpClient Client
+@inject ILocalStorageService LocalStorage
+@inject IJSRuntime JsRuntime
+
+
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
+@if (UserConnected.UserConnected)
+{
+   <button @onclick="TriggerFileUpload">Upload Photo</button>
+   <button>Photos Publiques</button>
+   <button>Votre Bibliothéque</button>
+}
+
+@if (!UserConnected.UserConnected)
+{
+   <button>Photos Publiques</button>
+
+}
+
+<InputFile id="fileInput" style="display:none" OnChange="HandleSelected" />
 Welcome to your new app.
+
+
+@code
+{
+   private IBrowserFile? selectedFile;
+   
+   private async void HandleSelected(InputFileChangeEventArgs e)
+   {
+      selectedFile = e.File;      // var files = (e.Value as InputFileChangeEventArgs)?.File;
+      await UploadImage(selectedFile);
+   }
+   
+   private async Task TriggerFileUpload()
+   {
+      await JsRuntime.InvokeVoidAsync("triggerFileInputClick");
+   }
+   
+   private async Task UploadImage(IBrowserFile file)
+   {
+      if (file != null)
+      {
+         
+         var content = new MultipartFormDataContent();
+         var streamContent = new StreamContent(file.OpenReadStream());
+         streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+         content.Add(streamContent, "file", file.Name);
+         
+         var response = await Client.PostAsync("/api/picture/upload", content);
+         
+         if (response.IsSuccessStatusCode)
+         {
+            Navigation.NavigateTo("/");
+            StateHasChanged();
+         }
+      }
+   }
+   
+   protected override async Task OnParametersSetAsync() {
+        
+      var account = await LocalStorage.GetItemAsync<Account>("account");
+        
+      if (account != null)
+      {
+         UserConnected.UserConnected = true;
+         StateHasChanged();
+      }
+      else
+      {
+         UserConnected.UserConnected = false;
+         StateHasChanged();
+      }
+   }
+}

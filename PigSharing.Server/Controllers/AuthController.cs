@@ -22,6 +22,11 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] Payload payload)
     {
         Account account = await _authRepository.Register(payload);
+
+        if (account == null)
+        {
+            return Forbid();
+        }
         
         return Ok(account);
     }
@@ -54,5 +59,12 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
     
-    
+    [HttpPost]
+    [Route("upload")]
+    public async Task<IActionResult> Upload([FromBody] IFormFile file)
+    {
+        Console.WriteLine("dfdf");
+        // Methode de iservice
+        return Ok();
+    }
 }
