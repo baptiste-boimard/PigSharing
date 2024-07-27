@@ -53,7 +53,7 @@
             flex-direction: column;
             width: 300px;
             height: 300px">
-            <div style="display: flex; align-content: space-around">
+            <div style="display: flex; justify-content: space-around">
                <img
                   src="@picture.Url"
                   alt="Photo publique"
@@ -82,20 +82,6 @@
       <img src="@largeImageUrl" alt="Large Photo" style="max-width: 90%; max-height: 90%;" />
    </div>
 }
-
-@* Affichage du menu pour les photos *@
-@* @if (selectedPhoto != null) *@
-@* { *@
-@*    <div class="modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;"> *@
-@*       <div style="background: white; padding: 20px; border-radius: 10px;"> *@
-@*          <h3>Photo Options</h3> *@
-@*          <p>Status: @(selectedPhoto.Private ? "Private" : "Public")</p> *@
-@*          <button @onclick="ToggleStatus">Change Status</button> *@
-@*          <button @onclick="DeletePhoto">Delete</button> *@
-@*          <button @onclick="ClosePhotoOptions">Close</button> *@
-@*       </div> *@
-@*    </div> *@
-@* } *@
 
 @code
 {
