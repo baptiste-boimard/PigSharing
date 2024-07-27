@@ -30,6 +30,7 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    
     <script>navigator.serviceWorker.register('service-worker.js');</script>
 <!--    Permet de similer un click sur element de la page-->
     <script>
@@ -37,6 +38,29 @@
             document.getElementById('fileInput').click();
         };
     </script>
+    
+<!--    Permet de gérer le click long sur les images-->
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', (event) => {-->
+<!--            let timer;-->
+
+<!--            document.querySelectorAll('.long-press').forEach(element => {-->
+<!--                element.addEventListener('mousedown', function (e) {-->
+<!--                    timer = setTimeout(() => {-->
+<!--                        DotNet.invokeMethodAsync('PigSharing.Client.Pages.Home.razor', 'ShowContextMenu', this.id);-->
+<!--                    }, 1000); // 1000 ms = 1 seconde-->
+<!--                });-->
+
+<!--                element.addEventListener('mouseup', function (e) {-->
+<!--                    clearTimeout(timer);-->
+<!--                });-->
+
+<!--                element.addEventListener('mouseleave', function (e) {-->
+<!--                    clearTimeout(timer);-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
 </body>
 
 </html>

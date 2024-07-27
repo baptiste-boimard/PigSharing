@@ -22,7 +22,7 @@ namespace PigSharing.Server.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PigSharing.Server.Database.Models.Account", b =>
+            modelBuilder.Entity("PigSharing.Share.Models.Account", b =>
                 {
                     b.Property<Guid>("ConnectionToken")
                         .ValueGeneratedOnAdd()
@@ -51,6 +51,12 @@ namespace PigSharing.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<bool>("Private")
                         .HasColumnType("boolean");
 
@@ -60,7 +66,25 @@ namespace PigSharing.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId");
+
                     b.ToTable("Pictures");
+                });
+
+            modelBuilder.Entity("PigSharing.Share.Models.Picture", b =>
+                {
+                    b.HasOne("PigSharing.Share.Models.Account", "Account")
+                        .WithMany("Pictures")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("PigSharing.Share.Models.Account", b =>
+                {
+                    b.Navigation("Pictures");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-namespace PigSharing.Client.Models;
+namespace PigSharing.Share.Models;
 
 public class Payload
 {

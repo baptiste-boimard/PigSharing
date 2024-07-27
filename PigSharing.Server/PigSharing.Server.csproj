@@ -21,6 +21,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PigSharing.Client\PigSharing.Client.csproj" />
+<!--      <ProjectReference Include="..\PigSharing.Share\PigSharing.Share.csproj" />-->
     </ItemGroup>
+
+<!--    <ItemGroup>-->
+<!--      <Reference Include="PigSharing.Share">-->
+<!--        <HintPath>bin\Debug\net8.0\PigSharing.Share.dll</HintPath>-->
+<!--      </Reference>-->
+<!--    </ItemGroup>-->
 
 </Project>

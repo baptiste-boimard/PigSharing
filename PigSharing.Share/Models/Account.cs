@@ -1,4 +1,4 @@
-namespace PigSharing.Server.Database.Models;
+namespace PigSharing.Share.Models;
 
 public class Account
 {
@@ -6,4 +6,5 @@ public class Account
     public required string UserName { get; set; }
     public required string Password { get; set; }
     public byte[] Salt { get; set; } = Array.Empty<byte>();
+    public List<Picture> Pictures { get; set; }
 }

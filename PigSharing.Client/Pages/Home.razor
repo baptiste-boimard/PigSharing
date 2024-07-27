@@ -1,9 +1,9 @@
 ﻿@page "/"
-@using System.Net.Http.Headers
+
+@using System.Text
+@using System.Text.Json
 @using Blazored.LocalStorage
-@using PigSharing.Server.Database.Models
 @using PigSharing.Share.Models
-@using Microsoft.JSInterop
 
 
 @inject User UserConnected
@@ -32,46 +32,92 @@
 }
 
 <InputFile id="fileInput" style="display:none" OnChange="HandleSelected" />
-Welcome to your new app.
 
+
+@* Affichage de la notification de suppression *@
+@if (!string.IsNullOrEmpty(notificationMessage))
+{
+   <div class="notification">
+      @notificationMessage
+   </div>
+}
+
+@* Affichage des miniatures publics *@
+@if (publics is { Length: > 0 })
+{
+   <div>
+      @foreach (var picture in publics)
+      {
+         <div style="
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            height: 300px">
+            <div style="display: flex; align-content: space-around">
+               <img
+                  src="@picture.Url"
+                  alt="Photo publique"
+                  style="width: 200px; height: 200px; margin: 10px"
+                  @onclick="() => ShowLargePhoto(picture.Url)"
+                  id="@picture.Id" />
+            </div>
+
+            <div style="text-align: center;">
+               <button style="background-color: @(picture.Private ? "transparent" : "blue"); color: @(picture.Private ? "black" : "white");" @onclick="() => SetPictureStatus(picture, false)">Public</button>
+               <button style="background-color: @(picture.Private ? "blue" : "transparent"); color: @(picture.Private ? "white" : "black");" @onclick="() => SetPictureStatus(picture, true)">Private</button>
+               <button @onclick="() => DeletePhoto(picture.Id)" style="background-color: transparent; cursor: pointer;">
+                  <i class="fas fa-trash" style="color: black;">Supprimer</i> <!-- Assurez-vous que vous avez Font Awesome ou une autre bibliothèque d'icônes -->
+               </button>
+            </div>
+         </div>
+         
+      }
+   </div>
+}
+
+@* Affichage en grand de la photo *@
+@if (largeImageUrl != null)
+{
+   <div class="modal" @onclick="CloseLargePhoto" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;">
+      <img src="@largeImageUrl" alt="Large Photo" style="max-width: 90%; max-height: 90%;" />
+   </div>
+}
+
+@* Affichage du menu pour les photos *@
+@* @if (selectedPhoto != null) *@
+@* { *@
+@*    <div class="modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;"> *@
+@*       <div style="background: white; padding: 20px; border-radius: 10px;"> *@
+@*          <h3>Photo Options</h3> *@
+@*          <p>Status: @(selectedPhoto.Private ? "Private" : "Public")</p> *@
+@*          <button @onclick="ToggleStatus">Change Status</button> *@
+@*          <button @onclick="DeletePhoto">Delete</button> *@
+@*          <button @onclick="ClosePhotoOptions">Close</button> *@
+@*       </div> *@
+@*    </div> *@
+@* } *@
 
 @code
 {
    private IBrowserFile? selectedFile;
-   
-   private async void HandleSelected(InputFileChangeEventArgs e)
+   private Picture[] publics;
+   private string largeImageUrl;
+   private Picture picture = new Picture();
+   private string notificationMessage;
+
+   // Après un rendu async
+   protected override async Task OnAfterRenderAsync(bool firstRender)
    {
-      selectedFile = e.File;      // var files = (e.Value as InputFileChangeEventArgs)?.File;
-      await UploadImage(selectedFile);
-   }
-   
-   private async Task TriggerFileUpload()
-   {
-      await JsRuntime.InvokeVoidAsync("triggerFileInputClick");
-   }
-   
-   private async Task UploadImage(IBrowserFile file)
-   {
-      if (file != null)
+      if (firstRender)
       {
-         
-         var content = new MultipartFormDataContent();
-         var streamContent = new StreamContent(file.OpenReadStream());
-         streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
-         content.Add(streamContent, "file", file.Name);
-         
-         var response = await Client.PostAsync("/api/picture/upload", content);
-         
-         if (response.IsSuccessStatusCode)
-         {
-            Navigation.NavigateTo("/");
-            StateHasChanged();
-         }
+         await JsRuntime.InvokeVoidAsync("addLongPressListener");
       }
    }
    
+   // Changement des paramètres de la page
    protected override async Task OnParametersSetAsync() {
-        
+      
+      // Passage à l'état connecté ou non
       var account = await LocalStorage.GetItemAsync<Account>("account");
         
       if (account != null)
@@ -84,5 +130,150 @@ Welcome to your new app.
          UserConnected.UserConnected = false;
          StateHasChanged();
       }
+
+      await GetPublics();
+   }
+   
+   // Méthode pour la séléction du fichier dans la boite de dialog
+   private async void HandleSelected(InputFileChangeEventArgs e)
+   {
+      selectedFile = e.File;
+      await UploadImage(selectedFile);
+   }
+   
+   // Méthode pour l'ouverture de la boite de dialogue
+   private async Task TriggerFileUpload()
+   {
+      await JsRuntime.InvokeVoidAsync("triggerFileInputClick");
+   }
+   
+   // Méthode pour demander l'upload de l'image
+   private async Task UploadImage(IBrowserFile file)
+   {
+      if (file != null)
+      {
+         var account = await LocalStorage.GetItemAsync<Account>("account");
+
+         var accountContent = new StringContent(
+            JsonSerializer.Serialize(account),
+            Encoding.UTF8,
+            "application/json");
+         
+         var content = new MultipartFormDataContent();
+         
+         var streamContent = new StreamContent(file.OpenReadStream());
+         streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+         
+         content.Add(streamContent, "file", file.Name);
+         content.Add(accountContent, "account");
+         
+         var response = await Client.PostAsync("/api/picture/upload", content);
+         
+         if (response.IsSuccessStatusCode)
+         {
+            Navigation.NavigateTo("/");
+            StateHasChanged();   
+         }
+      }
+   }
+   
+   // Permet d'obtnir les images publiques
+   private async Task GetPublics()
+   {
+      try
+      {
+         publics = await Client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
+         StateHasChanged();
+         
+      }
+      catch (Exception e)
+      {
+         Console.WriteLine(e);
+         throw;
+      }
+   }
+   
+   // Ouvrir la photo en grand
+   private void ShowLargePhoto(string url)
+   {
+      largeImageUrl = url;
+      StateHasChanged();
+   }
+
+   // Fermer la photo en grand
+   private void CloseLargePhoto()
+   {
+      largeImageUrl = null;
+      StateHasChanged();
+   }
+   
+   // [JSInvokable]
+   // public Task ShowContextMenu(Guid imageId)
+   // {
+   //    // selectedPhoto = publics.FirstOrDefault(p => p.Id == imageId);
+   //    StateHasChanged();
+   //    return Task.CompletedTask;
+   // }
+   
+   // private async Task DeletePhoto()
+   // {
+   //    if (selectedPhoto != null)
+   //    {
+   //       // Call an API to delete the photo in the backend
+   //       await Client.DeleteAsync($"/api/picture/delete/{selectedPhoto.Id}");
+   //       // publics.Remove(selectedPhoto);
+   //       selectedPhoto = null;
+   //       notificationMessage = "Photo deleted successfully.";
+   //       StateHasChanged();
+   //    }
+   // }
+   
+   // Permet de supprimer une image
+   private async Task DeletePhoto(Guid pictureId)
+   {
+      var response = await Client.DeleteAsync($"/api/picture/{pictureId}");
+      if (response.IsSuccessStatusCode)
+      {
+         // Supprime la picture de publics
+         // publics = publics.Where(p => p.Id != pictureId).ToList();
+         StateHasChanged();
+      }
+   }
+   
+   // Permet de changer le status de l'image Private/Publique
+   private async Task SetPictureStatus(Picture picture, bool isPrivate)
+   {
+      picture.Private = isPrivate;
+      
+      try
+      {
+         
+         // var content = new StringContent(
+         //    JsonSerializer.Serialize(picture),
+         //    Encoding.UTF8,
+         //    "application/json");
+
+         // var content = new MultipartFormDataContent();
+         
+         // content.Add(pictureContent, "picture");
+         
+         var response = await Client.PutAsJsonAsync($"/api/picture/updatestatus", picture);
+
+         if (response.IsSuccessStatusCode)
+         {
+            await GetPublics();
+         }
+         else
+         {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Error updating picture status: {errorMessage}");
+         }
+      }
+      catch (Exception e)
+      {
+         Console.WriteLine(e);
+         throw;
+      }
+      
    }
 }

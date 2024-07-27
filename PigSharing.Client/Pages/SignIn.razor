@@ -3,8 +3,7 @@
 @using System.Text
 @using System.Text.Json
 @using Blazored.LocalStorage
-@using PigSharing.Client.Models
-@using PigSharing.Server.Database.Models
+@using PigSharing.Share.Models
 
 @inject HttpClient Client
 @inject NavigationManager Navigation
@@ -14,17 +13,17 @@
 
 <div class="register-page">
     <h2>Login</h2>
-    <EditForm Model="Payload" OnValidSubmit="TryAuth">
+    <EditForm Model="payload" OnValidSubmit="TryAuth">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
         <div class="form-group">
             <label for="username">Username:</label>
-            <InputText id="username" @bind-Value="Payload.UserName" class="form-control" />
+            <InputText id="username" @bind-Value="payload.UserName" class="form-control" />
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <InputText id="password" @bind-Value="Payload.Password" type="password" class="form-control" />
+            <InputText id="password" @bind-Value="payload.Password" type="password" class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary">Se Connecter</button>
         <button type="button" class="btn btn-primary" @onclick="CancelSignIn">Annuler</button>
@@ -33,12 +32,12 @@
 
 @code {
 
-    private Payload Payload = new();
+    private Payload payload = new();
 
     private async Task TryAuth()
     {
         var content = new StringContent(
-            JsonSerializer.Serialize(Payload),
+            JsonSerializer.Serialize(payload),
             Encoding.UTF8,
             "Application/json");
         

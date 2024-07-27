@@ -12,7 +12,7 @@ using PigSharing.Server.Database;
 namespace PigSharing.Server.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240725163935_Initial")]
+    [Migration("20240727124254_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace PigSharing.Server.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PigSharing.Server.Database.Models.Account", b =>
+            modelBuilder.Entity("PigSharing.Share.Models.Account", b =>
                 {
                     b.Property<Guid>("ConnectionToken")
                         .ValueGeneratedOnAdd()
@@ -46,6 +46,48 @@ namespace PigSharing.Server.Migrations
                     b.HasKey("ConnectionToken");
 
                     b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("PigSharing.Share.Models.Picture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Private")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Pictures");
+                });
+
+            modelBuilder.Entity("PigSharing.Share.Models.Picture", b =>
+                {
+                    b.HasOne("PigSharing.Share.Models.Account", "Account")
+                        .WithMany("Pictures")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("PigSharing.Share.Models.Account", b =>
+                {
+                    b.Navigation("Pictures");
                 });
 #pragma warning restore 612, 618
         }

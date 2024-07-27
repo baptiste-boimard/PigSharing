@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using PigSharing.Client.Models;
-using PigSharing.Server.Database.Models;
 using PigSharing.Server.Repositories;
+using PigSharing.Share.Models;
 
 namespace PigSharing.Server.Controller;
 
@@ -57,14 +55,5 @@ public class AuthController : ControllerBase
         }
         
         return Ok(result);
-    }
-    
-    [HttpPost]
-    [Route("upload")]
-    public async Task<IActionResult> Upload([FromBody] IFormFile file)
-    {
-        Console.WriteLine("dfdf");
-        // Methode de iservice
-        return Ok();
     }
 }

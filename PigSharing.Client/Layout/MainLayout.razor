@@ -1,7 +1,6 @@
 ﻿@using System.Text
 @using System.Text.Json
 @using Blazored.LocalStorage
-@using PigSharing.Server.Database.Models
 @using PigSharing.Share.Models
 
 @inject HttpClient Client
@@ -75,7 +74,6 @@
 
             var id = account.ConnectionToken; 
             
-            // var response = await Client.DeleteAsync($"/api/auth/deleteuser/{id}");
             var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/auth/deleteuser")
             {
                 Content = content

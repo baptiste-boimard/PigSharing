@@ -1,6 +1,5 @@
-using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using PigSharing.Server.Database;
-using PigSharing.Server.Service;
 using PigSharing.Share.Models;
 
 namespace PigSharing.Server.Repositories;
@@ -14,13 +13,15 @@ public class PictureRepository
         _postgresDbContext = postgresDbContext;
     }
 
-    public async Task<bool> Upload(string url)
+    public async Task<bool> Upload(string url, Account account)
     {
         Picture newPicture = new Picture
         {
             Id = new Guid(),
             Url = url,
             Private = false,
+            Created = DateTime.UtcNow,
+            AccountId = account.ConnectionToken,
         };
 
         try
@@ -38,5 +39,37 @@ public class PictureRepository
         return true;
 
     }
-    
+
+    public async Task<Picture[]> GetAllPublics()
+    {
+
+        try
+        {
+            var urlList = await _postgresDbContext.Pictures
+                .Where(p => p.Private == false)
+                .ToArrayAsync();
+        
+            return urlList;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task<bool> UpdateStatusPrivate(Picture picture)
+    {
+        try
+        {
+            var result = _postgresDbContext.Pictures.Update(picture);
+            await _postgresDbContext.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
 }
