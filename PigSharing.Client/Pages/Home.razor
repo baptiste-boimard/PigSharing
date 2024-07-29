@@ -64,34 +64,69 @@
                imagesShowed = StateManager.AllImages;
             }
          }
-
-         @foreach (var picture in imagesShowed)
+         
+         @if (imagesShowed != null)
          {
-            <div style="
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            height: 300px">
-               <div style="display: flex; justify-content: space-around">
-                  <img
-                     src="@picture.Url"
-                     alt="Photo publique"
-                     style="width: 200px; height: 200px; margin: 10px"
-                     @onclick="() => ShowLargePhoto(picture.Url)"
-                     id="@picture.Id"/>
-               </div>
 
-               @if (StateManager.UserConnected && StateManager.ToggleAllImagePrivate)
-               {
-                  <div style="text-align: center;">
-                     <button style="background-color: @(picture.Private ? "transparent" : "blue"); color: @(picture.Private ? "black" : "white");" @onclick="() => SetPictureStatus(picture, false, localStorageAccount)">Public</button>
-                     <button style="background-color: @(picture.Private ? "blue" : "transparent"); color: @(picture.Private ? "white" : "black");" @onclick="() => SetPictureStatus(picture, true, localStorageAccount)">Private</button>
-                     <button @onclick="() => DeletePhoto(picture, localStorageAccount)" style="background-color: transparent; cursor: pointer;">
-                        <i class="fas fa-trash" style="color: black;">Supprimer</i>
-                     </button>
+            var groupedImages = imagesShowed
+               .OrderByDescending(p => p.Created)
+               .GroupBy(p => new { p.Created.Year, p.Created.Month })
+               .ToArray();
+            
+            @foreach (var group in groupedImages)
+            {
+               @* Séparateur avec le nom du mois et l'année *@
+               <h2>@group.Key.Month / @group.Key.Year</h2>
+               <hr style="border: 1px solid black; margin-bottom: 20px;" />
+
+               <div style="
+                  display: flex;
+                  flex-direction: row;
+                  flex-wrap: wrap;
+                  justify-content: space-around;
+                  margin-bottom: 20px"
+               >
+                  @foreach (var picture in group)
+                  {
+                     <div style="
+                     display: inline-block;
+                     margin: 5px;
+                     padding: 0;
+                     border: none"
+                  >
+                     <div style="
+                  display: flex;
+                  flex-direction: column">
+
+                        <div style="display: flex; justify-content: space-around">
+                           <img
+                              src="@picture.Url"
+                              alt="Photo publique"
+                              style="width: 100px; height: 100px; margin: 0px"
+                              @onclick="() => ShowLargePhoto(picture.Url)"
+                              id="@picture.Id"/>
+                        </div>
+
+                        @if (StateManager.UserConnected && StateManager.ToggleAllImagePrivate)
+                        {
+                        <div style="text-align: center;">
+                           <button style="background-color: @(picture.Private ? "transparent" : "blue"); color: @(picture.Private ? "black" : "white");" @onclick="() => SetPictureStatus(picture, false, localStorageAccount)">
+                              <i class="fas fa-lock-open"></i>
+                           </button>
+                           <button style="background-color: @(picture.Private ? "blue" : "transparent"); color: @(picture.Private ? "white" : "black");" @onclick="() => SetPictureStatus(picture, true, localStorageAccount)">
+                              <i class="fas fa-lock"></i>
+                           </button>
+                           <button @onclick="() => DeletePhoto(picture, localStorageAccount)" style="background-color: transparent; cursor: pointer;">
+                              <i class="fas fa-trash" style="color: black;"></i>
+                           </button>
+                        </div>
+                        }
+                     </div>
                   </div>
-               }
-            </div>
+                  }                  
+               </div>
+               
+            }
          }
       </div>
    @* } *@
