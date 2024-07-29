@@ -82,14 +82,12 @@ public class AuthRepository
         
         if (verifyAccount != null)
         {
-            _postgresDbContext.Accounts.Remove(verifyAccount);
-            await _postgresDbContext.SaveChangesAsync();
-            
-            // ON efface ensuite les images de dessus le cloud
+            // On efface les images de dessus le cloud
             var pictures = await _postgresDbContext.Pictures
                 .Where(p => p.AccountId == id)
                 .ToArrayAsync();
-
+            
+            
             foreach (var picture in pictures)
             {
                 var result = await _pictureService.DeletePhotoAsync(picture.PublicId);
@@ -99,6 +97,9 @@ public class AuthRepository
                     return false;
                 }
             }
+            
+            _postgresDbContext.Accounts.Remove(verifyAccount);
+            await _postgresDbContext.SaveChangesAsync();
             
             return true;
         }

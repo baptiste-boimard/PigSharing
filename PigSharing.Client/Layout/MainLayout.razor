@@ -38,8 +38,8 @@
 
             @if (StateManager.UserConnected)
             {
-            <button @onclick="ToggleAllImagePrivate">Bibliothéque</button>
-            <button @onclick="TogglePublics">Photos Publiques</button>
+            <button style="background-color: @(StateManager.ToggleAllImagePrivate ? "blue" : "transparent"); color: @(StateManager.ToggleAllImagePrivate ? "white" : "black");" @onclick="ToggleAllImagePrivate">Bibliothéque</button>
+            <button style="background-color: @(StateManager.TogglePublics ? "blue" : "transparent"); color: @(StateManager.TogglePublics ? "white" : "black");" @onclick="TogglePublics">Photos Publiques</button>
             <button @onclick="TriggerFileUpload">Upload Photo</button>
             }
 
