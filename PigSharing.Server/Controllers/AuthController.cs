@@ -9,10 +9,12 @@ namespace PigSharing.Server.Controller;
 public class AuthController : ControllerBase
 {
     private readonly AuthRepository _authRepository;
+    private readonly PictureRepository _pictureRepository;
 
-    public AuthController (AuthRepository authRepository)
+    public AuthController (AuthRepository authRepository, PictureRepository pictureRepository)
     {
         _authRepository = authRepository;
+        _pictureRepository = pictureRepository;
     }
 
     [HttpPost]
@@ -47,13 +49,13 @@ public class AuthController : ControllerBase
     [Route("deleteuser")]
     public async Task<IActionResult> DeleteUser([FromBody] Guid id)
     {
-        var result = await _authRepository.DeleteUser(id);
+        var resultUser = await _authRepository.DeleteUser(id);
         
-        if (result == false)
+        if (!resultUser)
         {
             return Forbid();
         }
         
-        return Ok(result);
+        return Ok();
     }
 }

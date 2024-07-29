@@ -60,6 +60,10 @@ namespace PigSharing.Server.Migrations
                     b.Property<bool>("Private")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("text");

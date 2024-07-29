@@ -1,12 +1,15 @@
 ﻿@using System.Text
 @using System.Text.Json
 @using Blazored.LocalStorage
+@using PigSharing.Client.Logic
 @using PigSharing.Share.Models
 
 @inject HttpClient Client
 @inject ILocalStorageService LocalStorage
-@inject User UserConnected
+@inject StateManager StateManager
 @inject NavigationManager Navigation
+@inject IJSRuntime JsRuntime
+@inject ImageService ImageService
 
 
 @inherits LayoutComponentBase
@@ -17,16 +20,37 @@
 
     <main>
         <div class="top-row px-4">
-            @if (!UserConnected.UserConnected)
+            @if (!StateManager.UserConnected)
             {
                 <a href="/register">S'incrire</a> 
                 <a href="/signin">Se Connecter</a>
 
             } else {
-                <a href="/register" @onclick="Logout">Se déconnecter</a>
+                <a href="/" @onclick="Logout">Se déconnecter</a>
                 <a href="/" @onclick="DeleteUser">Supprimer votre compte</a>
 
             }
+        </div>
+        
+        <div>
+
+            <h1>Hello, world!</h1>
+
+            @if (StateManager.UserConnected)
+            {
+            <button @onclick="ToggleAllImagePrivate">Bibliothéque</button>
+            <button @onclick="TogglePublics">Photos Publiques</button>
+            <button @onclick="TriggerFileUpload">Upload Photo</button>
+            }
+
+            @if (!StateManager.UserConnected)
+            {
+            <button>Photos Publiques</button>
+
+            }
+
+            <InputFile id="fileInput" style="display:none" OnChange="HandleSelected" />
+            
         </div>
 
         <article class="content px-4">
@@ -37,28 +61,27 @@
 
 @code
 {
+    private IBrowserFile? selectedFile;
     
-    protected override async Task OnParametersSetAsync() {
-        
-        var account = await LocalStorage.GetItemAsync<Account>("account");
-        
-        if (account != null)
-        {
-            UserConnected.UserConnected = true;
-            StateHasChanged();
-        }
-        else
-        {
-            UserConnected.UserConnected = false;
-            StateHasChanged();
-        }
+    // Methode qui permet de suivre les chnagement dans le StateManager
+    protected override void OnInitialized()
+    {
+        StateManager.OnChange += StateHasChanged;
+    }
+   
+    // Détruit l'event d'écoute quand le composant est detruit
+    // ????????????????? UTILE ICI JE PENSE PAS ????????????
+    public void Dispose()
+    {
+        StateManager.OnChange -= StateHasChanged;
     }
 
     private async Task Logout()
     {
         await LocalStorage.RemoveItemAsync("account");
-        UserConnected.UserConnected = false;
-        Navigation.NavigateTo("/");
+        StateManager.UserConnected = false;
+        StateManager.AllImages = new Picture[] {};
+        StateManager.ToggleAllImagePrivate = false;
     }
 
     private async Task DeleteUser()
@@ -84,10 +107,63 @@
             if (response.IsSuccessStatusCode)
             {
                 await LocalStorage.RemoveItemAsync("account");
-                UserConnected.UserConnected = false;
+                StateManager.UserConnected = false;
+                StateManager.TogglePublics = true;
+                StateManager.ToggleAllImagePrivate = false;
+                ImageService.GetPublics();
                 Navigation.NavigateTo("/");
             }
         }
     }
     
+    // Méthode pour l'ouverture de la boite de dialogue
+    private async Task TriggerFileUpload()
+    {
+        await JsRuntime.InvokeVoidAsync("triggerFileInputClick");
+    }
+    
+    // Méthode pour la séléction du fichier dans la boite de dialog
+    private async void HandleSelected(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+        await UploadImage(selectedFile);
+    }
+    
+    // Méthode pour demander l'upload de l'image
+    private async Task UploadImage(IBrowserFile file)
+    {
+        
+        var account = await LocalStorage.GetItemAsync<Account>("account");
+
+        if (file != null && account != null)
+        {
+            
+            var result = await ImageService.UploadImage(file, account);
+         
+            if (result)
+            {
+                await ImageService.GetAllImages(account);
+                await ImageService.GetPublics();
+                Navigation.NavigateTo("/");
+                StateHasChanged();   
+            }
+        }
+    }
+    
+    // Méthode d'affichage des photos publics
+    private async Task TogglePublics()
+    {
+        StateManager.TogglePublics = true;
+        StateManager.ToggleAllImagePrivate = false;
+        StateManager.NotifyStateChanged();
+    }
+    
+    // Méthode d'affichage allimages
+    private async Task ToggleAllImagePrivate()
+    {
+        StateManager.TogglePublics = false;
+        StateManager.ToggleAllImagePrivate = true;
+        StateManager.NotifyStateChanged();
+    } 
+
 }

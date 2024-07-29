@@ -2,6 +2,8 @@
 @inject HttpClient Client
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
+@inject StateManager StateManager
+
 @using System.Text
 @using System.Text.Json
 @using Blazored.LocalStorage
@@ -49,6 +51,7 @@
             if (account != null)
             {
                 await LocalStorage.SetItemAsync("account", account);
+                StateManager.UserConnected = true;
                 Navigation.NavigateTo("/");
                 
             }

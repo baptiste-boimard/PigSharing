@@ -1,37 +1,38 @@
 ﻿@page "/"
 
-@using System.Text
-@using System.Text.Json
 @using Blazored.LocalStorage
+@using PigSharing.Client.Logic
 @using PigSharing.Share.Models
 
-
-@inject User UserConnected
+@inject StateManager StateManager
 @inject NavigationManager Navigation
 @inject HttpClient Client
 @inject ILocalStorageService LocalStorage
 @inject IJSRuntime JsRuntime
+@inject ImageService ImageService
+
+@implements IDisposable
 
 
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-
-@if (UserConnected.UserConnected)
-{
-   <button @onclick="TriggerFileUpload">Upload Photo</button>
-   <button>Photos Publiques</button>
-   <button>Votre Bibliothéque</button>
-}
-
-@if (!UserConnected.UserConnected)
-{
-   <button>Photos Publiques</button>
-
-}
-
-<InputFile id="fileInput" style="display:none" OnChange="HandleSelected" />
+@* <h1>Hello, world!</h1> *@
+@* *@
+@* @if (UserConnected.UserConnected) *@
+@* { *@
+@*    <button>Votre Bibliothéque</button> *@
+@*    <button>Photos Publiques</button> *@
+@*    <button @onclick="TriggerFileUpload">Upload Photo</button> *@
+@* } *@
+@* *@
+@* @if (!UserConnected.UserConnected) *@
+@* { *@
+@*    <button>Photos Publiques</button> *@
+@* *@
+@* } *@
+@* *@
+@* <InputFile id="fileInput" style="display:none" OnChange="HandleSelected" /> *@
 
 
 @* Affichage de la notification de suppression *@
@@ -43,37 +44,59 @@
 }
 
 @* Affichage des miniatures publics *@
-@if (publics is { Length: > 0 })
-{
-   <div>
-      @foreach (var picture in publics)
-      {
-         <div style="
+@* @if (!StateManager.UserConnected) *@
+@* { *@
+   @* @if (StateManager.Publics is { Length: > 0 }) *@
+   @* { *@
+      <div>
+         @if (!StateManager.UserConnected)
+         {
+            imagesShowed = StateManager.Publics;
+         }
+         else
+         {
+            if (StateManager.TogglePublics)
+            {
+               imagesShowed = StateManager.Publics;
+            }
+            else
+            {
+               imagesShowed = StateManager.AllImages;
+            }
+         }
+
+         @foreach (var picture in imagesShowed)
+         {
+            <div style="
             display: flex;
             flex-direction: column;
             width: 300px;
             height: 300px">
-            <div style="display: flex; justify-content: space-around">
-               <img
-                  src="@picture.Url"
-                  alt="Photo publique"
-                  style="width: 200px; height: 200px; margin: 10px"
-                  @onclick="() => ShowLargePhoto(picture.Url)"
-                  id="@picture.Id" />
-            </div>
+               <div style="display: flex; justify-content: space-around">
+                  <img
+                     src="@picture.Url"
+                     alt="Photo publique"
+                     style="width: 200px; height: 200px; margin: 10px"
+                     @onclick="() => ShowLargePhoto(picture.Url)"
+                     id="@picture.Id"/>
+               </div>
 
-            <div style="text-align: center;">
-               <button style="background-color: @(picture.Private ? "transparent" : "blue"); color: @(picture.Private ? "black" : "white");" @onclick="() => SetPictureStatus(picture, false)">Public</button>
-               <button style="background-color: @(picture.Private ? "blue" : "transparent"); color: @(picture.Private ? "white" : "black");" @onclick="() => SetPictureStatus(picture, true)">Private</button>
-               <button @onclick="() => DeletePhoto(picture.Id)" style="background-color: transparent; cursor: pointer;">
-                  <i class="fas fa-trash" style="color: black;">Supprimer</i> <!-- Assurez-vous que vous avez Font Awesome ou une autre bibliothèque d'icônes -->
-               </button>
+               @if (StateManager.UserConnected && StateManager.ToggleAllImagePrivate)
+               {
+                  <div style="text-align: center;">
+                     <button style="background-color: @(picture.Private ? "transparent" : "blue"); color: @(picture.Private ? "black" : "white");" @onclick="() => SetPictureStatus(picture, false, localStorageAccount)">Public</button>
+                     <button style="background-color: @(picture.Private ? "blue" : "transparent"); color: @(picture.Private ? "white" : "black");" @onclick="() => SetPictureStatus(picture, true, localStorageAccount)">Private</button>
+                     <button @onclick="() => DeletePhoto(picture, localStorageAccount)" style="background-color: transparent; cursor: pointer;">
+                        <i class="fas fa-trash" style="color: black;">Supprimer</i>
+                     </button>
+                  </div>
+               }
             </div>
-         </div>
-         
-      }
-   </div>
-}
+         }
+      </div>
+   @* } *@
+@* } *@
+
 
 @* Affichage en grand de la photo *@
 @if (largeImageUrl != null)
@@ -86,98 +109,127 @@
 @code
 {
    private IBrowserFile? selectedFile;
-   private Picture[] publics;
-   private string largeImageUrl;
-   private Picture picture = new Picture();
-   private string notificationMessage;
-
-   // Après un rendu async
-   protected override async Task OnAfterRenderAsync(bool firstRender)
-   {
-      if (firstRender)
-      {
-         await JsRuntime.InvokeVoidAsync("addLongPressListener");
-      }
-   }
+   // private Picture[] publics;
    
-   // Changement des paramètres de la page
-   protected override async Task OnParametersSetAsync() {
-      
+   private Picture[]? imagesShowed = new Picture[]{};
+
+   private Account? localStorageAccount; 
+   
+   private string largeImageUrl;
+   private Picture? picture = new Picture();
+   private string notificationMessage;
+   
+   // Methode qui permet de suivre les chnagement dans le StateManager
+   protected async override void OnInitialized()
+   {
       // Passage à l'état connecté ou non
       var account = await LocalStorage.GetItemAsync<Account>("account");
-        
+      localStorageAccount = account;
+      
       if (account != null)
       {
-         UserConnected.UserConnected = true;
+         StateManager.UserConnected = true;
+         await ImageService.GetAllImages(account);
          StateHasChanged();
       }
       else
       {
-         UserConnected.UserConnected = false;
+         StateManager.UserConnected = false;
+         await ImageService.GetPublics();
          StateHasChanged();
       }
-
-      await GetPublics();
+      
+      StateManager.OnChange += StateHasChanged;
    }
+   
+   // Détruit l'event d'écoute quand le composant est detruit
+   // ????????????????? UTILE ICI JE PENSE PAS ????????????
+   public void Dispose()
+   {
+      StateManager.OnChange -= StateHasChanged;
+   }
+
+   
+   // Changement des paramètres de la page
+   // protected override async Task OnParametersSetAsync() {
+   //    
+   //    // Passage à l'état connecté ou non
+   //    var account = await LocalStorage.GetItemAsync<Account>("account");
+   //      
+   //    if (account != null)
+   //    {
+   //       StateManager.UserConnected = true;
+   //       await ImageService.GetAllImages();
+   //       StateHasChanged();
+   //    }
+   //    else
+   //    {
+   //       StateManager.UserConnected = false;
+   //       await ImageService.GetPublics();
+   //       StateHasChanged();
+   //    }
+   //
+   // }
    
    // Méthode pour la séléction du fichier dans la boite de dialog
-   private async void HandleSelected(InputFileChangeEventArgs e)
-   {
-      selectedFile = e.File;
-      await UploadImage(selectedFile);
-   }
+   // private async void HandleSelected(InputFileChangeEventArgs e)
+   // {
+   //    selectedFile = e.File;
+   //    await UploadImage(selectedFile);
+   // }
    
    // Méthode pour l'ouverture de la boite de dialogue
-   private async Task TriggerFileUpload()
-   {
-      await JsRuntime.InvokeVoidAsync("triggerFileInputClick");
-   }
+   // private async Task TriggerFileUpload()
+   // {
+   //    await JsRuntime.InvokeVoidAsync("triggerFileInputClick");
+   // }
    
    // Méthode pour demander l'upload de l'image
-   private async Task UploadImage(IBrowserFile file)
-   {
-      if (file != null)
-      {
-         var account = await LocalStorage.GetItemAsync<Account>("account");
-
-         var accountContent = new StringContent(
-            JsonSerializer.Serialize(account),
-            Encoding.UTF8,
-            "application/json");
-         
-         var content = new MultipartFormDataContent();
-         
-         var streamContent = new StreamContent(file.OpenReadStream());
-         streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
-         
-         content.Add(streamContent, "file", file.Name);
-         content.Add(accountContent, "account");
-         
-         var response = await Client.PostAsync("/api/picture/upload", content);
-         
-         if (response.IsSuccessStatusCode)
-         {
-            Navigation.NavigateTo("/");
-            StateHasChanged();   
-         }
-      }
-   }
+   // private async Task UploadImage(IBrowserFile file)
+   // {
+   //    if (file != null)
+   //    {
+   //       var account = await LocalStorage.GetItemAsync<Account>("account");
+   //
+   //       var accountContent = new StringContent(
+   //          JsonSerializer.Serialize(account),
+   //          Encoding.UTF8,
+   //          "application/json");
+   //       
+   //       var content = new MultipartFormDataContent();
+   //       
+   //       var streamContent = new StreamContent(file.OpenReadStream());
+   //       streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+   //       
+   //       content.Add(streamContent, "file", file.Name);
+   //       content.Add(accountContent, "account");
+   //       
+   //       var response = await Client.PostAsync("/api/picture/upload", content);
+   //       
+   //       if (response.IsSuccessStatusCode)
+   //       {
+   //          await GetPublics();
+   //          Navigation.NavigateTo("/");
+   //          StateHasChanged();   
+   //       }
+   //    }
+   // }
    
    // Permet d'obtnir les images publiques
-   private async Task GetPublics()
-   {
-      try
-      {
-         publics = await Client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
-         StateHasChanged();
-         
-      }
-      catch (Exception e)
-      {
-         Console.WriteLine(e);
-         throw;
-      }
-   }
+   // private async Task GetPublics()
+   // {
+   //    try
+   //    {
+   //       StateManager.Publics = await Client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
+   //       StateHasChanged();
+   //       
+   //    }
+   //    catch (Exception e)
+   //    {
+   //       Console.WriteLine(e);
+   //       throw;
+   //    }
+   // }
    
    // Ouvrir la photo en grand
    private void ShowLargePhoto(string url)
@@ -193,61 +245,33 @@
       StateHasChanged();
    }
    
-   // [JSInvokable]
-   // public Task ShowContextMenu(Guid imageId)
-   // {
-   //    // selectedPhoto = publics.FirstOrDefault(p => p.Id == imageId);
-   //    StateHasChanged();
-   //    return Task.CompletedTask;
-   // }
-   
-   // private async Task DeletePhoto()
-   // {
-   //    if (selectedPhoto != null)
-   //    {
-   //       // Call an API to delete the photo in the backend
-   //       await Client.DeleteAsync($"/api/picture/delete/{selectedPhoto.Id}");
-   //       // publics.Remove(selectedPhoto);
-   //       selectedPhoto = null;
-   //       notificationMessage = "Photo deleted successfully.";
-   //       StateHasChanged();
-   //    }
-   // }
-   
    // Permet de supprimer une image
-   private async Task DeletePhoto(Guid pictureId)
+   private async Task DeletePhoto(Picture picture, Account account)
    {
-      var response = await Client.DeleteAsync($"/api/picture/{pictureId}");
+      var response = await Client.PostAsJsonAsync($"/api/picture/deleteimage", picture);
+      
       if (response.IsSuccessStatusCode)
       {
-         // Supprime la picture de publics
-         // publics = publics.Where(p => p.Id != pictureId).ToList();
+         await ImageService.GetAllImages(account);
+         await ImageService.GetPublics();
+         Navigation.NavigateTo("/");
          StateHasChanged();
       }
    }
    
    // Permet de changer le status de l'image Private/Publique
-   private async Task SetPictureStatus(Picture picture, bool isPrivate)
+   private async Task SetPictureStatus(Picture picture, bool isPrivate, Account account)
    {
       picture.Private = isPrivate;
       
       try
       {
-         
-         // var content = new StringContent(
-         //    JsonSerializer.Serialize(picture),
-         //    Encoding.UTF8,
-         //    "application/json");
-
-         // var content = new MultipartFormDataContent();
-         
-         // content.Add(pictureContent, "picture");
-         
          var response = await Client.PutAsJsonAsync($"/api/picture/updatestatus", picture);
 
          if (response.IsSuccessStatusCode)
          {
-            await GetPublics();
+            await ImageService.GetAllImages(account);
+            await ImageService.GetPublics();
          }
          else
          {

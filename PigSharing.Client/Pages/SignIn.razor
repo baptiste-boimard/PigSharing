@@ -3,11 +3,14 @@
 @using System.Text
 @using System.Text.Json
 @using Blazored.LocalStorage
+@using PigSharing.Client.Logic
 @using PigSharing.Share.Models
 
 @inject HttpClient Client
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
+@inject StateManager StateManager
+@inject ImageService ImageService
 
 <PageTitle>SignIn</PageTitle>
 
@@ -50,6 +53,10 @@
             if (account != null)
             {
                 await LocalStorage.SetItemAsync("account", account);
+                StateManager.UserConnected = true;
+                StateManager.ToggleAllImagePrivate = true;
+                StateManager.TogglePublics = false;
+                await ImageService.GetAllImages(account);
                 Navigation.NavigateTo("/");
             }
         }

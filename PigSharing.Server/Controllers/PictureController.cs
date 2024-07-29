@@ -25,11 +25,9 @@ public class PictureController : ControllerBase
     public async Task<IActionResult> Upload([FromForm]IFormFile file, [FromForm]string account)
     {
         
-        var resultUrl = await _pictureService.AddPhotoAsync(file);
-
-        var accountDes = JsonSerializer.Deserialize<Account>(account);
+        var result = await _pictureService.AddPhotoAsync(file);
         
-        var response = await _pictureRepository.Upload(resultUrl, accountDes);
+        var response = await _pictureRepository.Upload(result.Url.ToString(), result.PublicId, JsonSerializer.Deserialize<Account>(account));
         return Ok();
     }
     
@@ -53,6 +51,23 @@ public class PictureController : ControllerBase
         }
     }
 
+    [HttpGet]
+    [Route("getallimages/{idAccount}")]
+    public async Task<IActionResult> GetAllImages(Guid idAccount)
+    {
+        try
+        {
+            var response = _pictureRepository.GetAllImages(idAccount);
+
+            return Ok(response.Result);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     [HttpPut]
     [Route("updatestatus")]
     public async Task<IActionResult> UpdateStatusPrivate([FromBody] Picture picture)
@@ -67,5 +82,24 @@ public class PictureController : ControllerBase
         var response = await _pictureRepository.UpdateStatusPrivate(picture);
 
         return Ok(response);
+    }
+
+    [HttpPost]
+    [Route("deleteimage")]
+    public async Task<IActionResult> DeleteImage([FromBody] Picture picture)
+    {
+        var response = await _pictureRepository.DeleteImage(picture);
+
+        if (response)
+        {
+           var result = await _pictureService.DeletePhotoAsync(picture.PublicId);
+           
+           if (result.Result != "ok")
+           {
+               return Forbid();
+           }
+        }
+        
+        return Ok();
     }
 }

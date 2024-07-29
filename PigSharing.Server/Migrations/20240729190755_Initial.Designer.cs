@@ -12,7 +12,7 @@ using PigSharing.Server.Database;
 namespace PigSharing.Server.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240727124254_Initial")]
+    [Migration("20240729190755_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -62,6 +62,10 @@ namespace PigSharing.Server.Migrations
 
                     b.Property<bool>("Private")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Url")
                         .IsRequired()

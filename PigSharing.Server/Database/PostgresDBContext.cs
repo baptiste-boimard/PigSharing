@@ -26,7 +26,6 @@ public class PostgresDbContext: DbContext
             entity.HasMany(a => a.Pictures)
                 .WithOne(a => a.Account)
                 .HasForeignKey(p => p.AccountId);
-
         });
 
         modelBuilder.Entity<Picture>(entity =>
@@ -36,10 +35,5 @@ public class PostgresDbContext: DbContext
                 .WithMany(p => p.Pictures)
                 .HasForeignKey(p => p.AccountId);
         });
-
-
-
     }
-    
-    
 }

@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using PigSharing.Server.Database;
+using PigSharing.Server.Service;
 using PigSharing.Share.Models;
 using Payload = PigSharing.Share.Models.Payload;
 
@@ -10,10 +11,12 @@ namespace PigSharing.Server.Repositories;
 public class AuthRepository
 {
     private readonly PostgresDbContext _postgresDbContext;
+    private readonly PictureService _pictureService;
 
-    public AuthRepository(PostgresDbContext postgresDbContext)
+    public AuthRepository(PostgresDbContext postgresDbContext, PictureService pictureService)
     {
         _postgresDbContext = postgresDbContext;
+        _pictureService = pictureService;
     }
 
     // Enrengistrement de la BDD du new user si il n'est pas existant
@@ -76,11 +79,27 @@ public class AuthRepository
     {
         var verifyAccount = await _postgresDbContext.Accounts.FirstOrDefaultAsync(
             a => a.ConnectionToken == id);
-
+        
         if (verifyAccount != null)
         {
             _postgresDbContext.Accounts.Remove(verifyAccount);
             await _postgresDbContext.SaveChangesAsync();
+            
+            // ON efface ensuite les images de dessus le cloud
+            var pictures = await _postgresDbContext.Pictures
+                .Where(p => p.AccountId == id)
+                .ToArrayAsync();
+
+            foreach (var picture in pictures)
+            {
+                var result = await _pictureService.DeletePhotoAsync(picture.PublicId);
+
+                if (result.Result != "ok")
+                {
+                    return false;
+                }
+            }
+            
             return true;
         }
 

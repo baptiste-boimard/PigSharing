@@ -19,7 +19,7 @@ public class PictureService
         _cloudinary = new Cloudinary(acc);
     }
     
-    public async Task<string> AddPhotoAsync(IFormFile file)
+    public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
     {
         try
         {
@@ -38,7 +38,7 @@ public class PictureService
                     uploadResult = await _cloudinary.UploadAsync(uploadParams);
                 }
             }
-            return uploadResult.Url.ToString();
+            return uploadResult;
         }
         catch (Exception e)
         {

@@ -13,12 +13,13 @@ public class PictureRepository
         _postgresDbContext = postgresDbContext;
     }
 
-    public async Task<bool> Upload(string url, Account account)
+    public async Task<bool> Upload(string url, string publicId, Account account)
     {
         Picture newPicture = new Picture
         {
             Id = new Guid(),
             Url = url,
+            PublicId = publicId,
             Private = false,
             Created = DateTime.UtcNow,
             AccountId = account.ConnectionToken,
@@ -57,6 +58,23 @@ public class PictureRepository
             throw;
         }
     }
+    
+    public async Task<Picture[]> GetAllImages(Guid idAccount)
+    {
+        try
+        {
+            var imagesArray = await _postgresDbContext.Pictures
+                .Where(p=> p.AccountId == idAccount)
+                .ToArrayAsync();
+
+            return imagesArray;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 
     public async Task<bool> UpdateStatusPrivate(Picture picture)
     {
@@ -72,4 +90,48 @@ public class PictureRepository
             return false;
         }
     }
+
+    public async Task<bool> DeleteImage(Picture picture)
+    {
+        var handlePicture = await _postgresDbContext.Pictures.FindAsync(picture.Id);
+
+        if (handlePicture != null)
+        {
+            _postgresDbContext.Pictures.Remove(handlePicture);
+            await _postgresDbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> DeleteAllImagesOfOneUser(Guid accountId)
+    {
+        var pictures = _postgresDbContext.Pictures
+            .Where(p => p.AccountId == accountId)
+            .ToArrayAsync()
+            .Result;
+
+        foreach (var picture in pictures)
+        {
+            _postgresDbContext.Pictures.Remove(picture);
+        }
+
+        await _postgresDbContext.SaveChangesAsync();
+
+        var picturesAfterRemove = _postgresDbContext.Pictures
+            .Where(p => p.AccountId == accountId)
+            .ToArrayAsync()
+            .Result;
+        
+        if (picturesAfterRemove == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+  
 }

@@ -31,6 +31,7 @@ namespace PigSharing.Server.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Url = table.Column<string>(type: "text", nullable: false),
+                    PublicId = table.Column<string>(type: "text", nullable: false),
                     Private = table.Column<bool>(type: "boolean", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AccountId = table.Column<Guid>(type: "uuid", nullable: false)
