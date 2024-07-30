@@ -13,8 +13,6 @@
 
 @implements IDisposable
 
-
-
 <PageTitle>Home</PageTitle>
 
 @* Affichage de la notification de suppression *@
@@ -26,67 +24,66 @@
 }
 
 @* Affichage des miniatures publics *@
-      <div>
-         @if (!StateManager.UserConnected)
-         {
-            imagesShowed = StateManager.Publics;
-         }
-         else
-         {
-            if (StateManager.TogglePublics)
-            {
-               imagesShowed = StateManager.Publics;
-            }
-            else
-            {
-               imagesShowed = StateManager.AllImages;
-            }
-         }
-         
-         @if (imagesShowed != null)
-         {
+<div>
+   @if (!StateManager.UserConnected)
+   {
+      imagesShowed = StateManager.Publics;
+   }
+   else
+   {
+      if (StateManager.TogglePublics)
+      {
+         imagesShowed = StateManager.Publics;
+      }
+      else
+      {
+         imagesShowed = StateManager.AllImages;
+      }
+   }
+   
+   @if (imagesShowed != null)
+   {
 
-            var groupedImages = imagesShowed
-               .OrderByDescending(p => p.Created)
-               .GroupBy(p => new { p.Created.Year, p.Created.Month })
-               .ToArray();
-            
-            @foreach (var group in groupedImages)
-            {
-               @* Séparateur avec le nom du mois et l'année *@
-               <h7 style="margin-bottom: 5px">@group.Key.Month / @group.Key.Year</h7>
-               <hr style="border: 1px solid black; margin-bottom: 20px; margin-top: 0px" />
+      var groupedImages = imagesShowed
+         .OrderByDescending(p => p.Created)
+         .GroupBy(p => new { p.Created.Year, p.Created.Month })
+         .ToArray();
+      
+      @foreach (var group in groupedImages)
+      {
+         @* Séparateur avec le nom du mois et l'année *@
+         <h7 style="margin-bottom: 5px">@group.Key.Month / @group.Key.Year</h7>
+         <hr style="border: 1px solid black; margin-bottom: 20px; margin-top: 0px" />
 
+         <div style="
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px">
+            @foreach (var picture in group)
+            {
                <div style="
-                  display: flex;
-                  flex-direction: row;
-                  flex-wrap: wrap;
-                  justify-content: space-around;
-                  margin-bottom: 20px"
-               >
-                  @foreach (var picture in group)
-                  {
-                     <div style="
-                     display: inline-block;
-                     margin: 5px;
-                     padding: 0;
-                     border: none"
-                  >
-                     <div style="
-                  display: flex;
-                  flex-direction: column">
+               display: inline-block;
+               margin: 5px;
+               padding: 0;
+               border: none">
+                  
+                  <div style="
+            display: flex;
+            flex-direction: column">
 
-                        <div style="display: flex; justify-content: space-around">
-                           <img
-                              src="@picture.Url"
-                              alt="Photo publique"
-                              style="width: 100px; height: 100px; margin: 0px"
-                              @onclick="() => ShowLargePhoto(picture.Url)"
-                              id="@picture.Id"/>
-                        </div>
+                     <div style="display: flex; justify-content: space-around">
+                        <img
+                           src="@picture.Url"
+                           alt="Photo publique"
+                           style="width: 100px; height: 100px; margin: 0px"
+                           @onclick="() => ShowLargePhoto(picture.Url)"
+                           id="@picture.Id"/>
+                     </div>
 
-                        @if (StateManager.UserConnected && StateManager.ToggleAllImagePrivate)
-                        {
+                     @if (StateManager.UserConnected && StateManager.ToggleAllImagePrivate)
+                     {
                         <div style="text-align: center; width: 100px; margin-top: 5px; display: flex; flex-direction: row; justify-content: space-around">
                            <button style="background-color: @(picture.Private ? "transparent" : "#15b0d3"); color: @(picture.Private ? "#15b0d3" : "white"); border: solid 1px #15b0d3" @onclick="() => SetPictureStatus(picture, false, localStorageAccount)">
                               <i class="fas fa-lock-open"></i>
@@ -98,30 +95,26 @@
                               <i class="fas fa-trash" style="color: #15b0d3;"></i>
                            </button>
                         </div>
-                        }
-                        <div>
-                           <button @onclick="() => CopyUrlToClipboard(picture.Url)" style="background-color: transparent; cursor: pointer; color: #15b0d3; font-size: 12px; width: 100px; display: flex; justify-content: space-around; margin-top: 5px; align-items: center; border: solid 1px #15b0d3">
-                              <i class="fas fa-copy" style="color: #15b0d3;"></i>
-                              Copier Url
-                           </button>
-                        </div>
+                     }
+                     <div>
+                        <button @onclick="() => CopyUrlToClipboard(picture.Url)" style="background-color: transparent; cursor: pointer; color: #15b0d3; font-size: 12px; width: 100px; display: flex; justify-content: space-around; margin-top: 5px; align-items: center; border: solid 1px #15b0d3">
+                           <i class="fas fa-copy" style="color: #15b0d3;"></i>
+                           Copier Url
+                        </button>
                      </div>
                   </div>
-                  }                  
                </div>
-               
-            }
-         }
-      </div>
-   @* } *@
-@* } *@
-
+            }                  
+         </div>
+      }
+   }
+</div>
 
 @* Affichage en grand de la photo *@
 @if (largeImageUrl != null)
 {
-   <div class="modal" @onclick="CloseLargePhoto" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;">
-      <img src="@largeImageUrl" alt="Large Photo" style="max-width: 90%; max-height: 90%;" />
+   <div class="modal" @onclick="CloseLargePhoto" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center">
+      <img src="@largeImageUrl" alt="Large Photo" style="max-width: 90%; max-height: 90%" />
    </div>
 }
 
