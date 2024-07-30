@@ -11,7 +11,9 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5248") });
-// builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+// Permet de charger mon appsettings.json sous un autre nom
+builder.Configuration.AddJsonFile("client.appsettings.json", optional: false, reloadOnChange: true);
 
 // Service permet de stocker les variables utiles pour le front
 builder.Services.AddSingleton<StateManager>();
