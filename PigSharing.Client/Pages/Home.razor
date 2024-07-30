@@ -17,24 +17,6 @@
 
 <PageTitle>Home</PageTitle>
 
-@* <h1>Hello, world!</h1> *@
-@* *@
-@* @if (UserConnected.UserConnected) *@
-@* { *@
-@*    <button>Votre Bibliothéque</button> *@
-@*    <button>Photos Publiques</button> *@
-@*    <button @onclick="TriggerFileUpload">Upload Photo</button> *@
-@* } *@
-@* *@
-@* @if (!UserConnected.UserConnected) *@
-@* { *@
-@*    <button>Photos Publiques</button> *@
-@* *@
-@* } *@
-@* *@
-@* <InputFile id="fileInput" style="display:none" OnChange="HandleSelected" /> *@
-
-
 @* Affichage de la notification de suppression *@
 @if (!string.IsNullOrEmpty(notificationMessage))
 {
@@ -44,10 +26,6 @@
 }
 
 @* Affichage des miniatures publics *@
-@* @if (!StateManager.UserConnected) *@
-@* { *@
-   @* @if (StateManager.Publics is { Length: > 0 }) *@
-   @* { *@
       <div>
          @if (!StateManager.UserConnected)
          {
@@ -76,8 +54,8 @@
             @foreach (var group in groupedImages)
             {
                @* Séparateur avec le nom du mois et l'année *@
-               <h2>@group.Key.Month / @group.Key.Year</h2>
-               <hr style="border: 1px solid black; margin-bottom: 20px;" />
+               <h7 style="margin-bottom: 5px">@group.Key.Month / @group.Key.Year</h7>
+               <hr style="border: 1px solid black; margin-bottom: 20px; margin-top: 0px" />
 
                <div style="
                   display: flex;
@@ -109,21 +87,22 @@
 
                         @if (StateManager.UserConnected && StateManager.ToggleAllImagePrivate)
                         {
-                        <div style="text-align: center;">
-                           <button style="background-color: @(picture.Private ? "transparent" : "blue"); color: @(picture.Private ? "black" : "white");" @onclick="() => SetPictureStatus(picture, false, localStorageAccount)">
+                        <div style="text-align: center; width: 100px; margin-top: 5px; display: flex; flex-direction: row; justify-content: space-around">
+                           <button style="background-color: @(picture.Private ? "transparent" : "#15b0d3"); color: @(picture.Private ? "#15b0d3" : "white"); border: solid 1px #15b0d3" @onclick="() => SetPictureStatus(picture, false, localStorageAccount)">
                               <i class="fas fa-lock-open"></i>
                            </button>
-                           <button style="background-color: @(picture.Private ? "blue" : "transparent"); color: @(picture.Private ? "white" : "black");" @onclick="() => SetPictureStatus(picture, true, localStorageAccount)">
+                           <button style="background-color: @(picture.Private ? "#15b0d3" : "transparent"); color: @(picture.Private ? "white" : "#15b0d3");border: solid 1px #15b0d3" @onclick="() => SetPictureStatus(picture, true, localStorageAccount)">
                               <i class="fas fa-lock"></i>
                            </button>
-                           <button @onclick="() => DeletePhoto(picture, localStorageAccount)" style="background-color: transparent; cursor: pointer;">
-                              <i class="fas fa-trash" style="color: black;"></i>
+                           <button @onclick="() => DeletePhoto(picture, localStorageAccount)" style="background-color: transparent; cursor: pointer; border: 1px solid #15b0d3">
+                              <i class="fas fa-trash" style="color: #15b0d3;"></i>
                            </button>
                         </div>
                         }
                         <div>
-                           <button @onclick="() => CopyUrlToClipboard(picture.Url)" style="background-color: transparent; cursor: pointer;">
-                              <i class="fas fa-copy" style="color: black;">Copier Url</i> 
+                           <button @onclick="() => CopyUrlToClipboard(picture.Url)" style="background-color: transparent; cursor: pointer; color: #15b0d3; font-size: 12px; width: 100px; display: flex; justify-content: space-around; margin-top: 5px; align-items: center; border: solid 1px #15b0d3">
+                              <i class="fas fa-copy" style="color: #15b0d3;"></i>
+                              Copier Url
                            </button>
                         </div>
                      </div>

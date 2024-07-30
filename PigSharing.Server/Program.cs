@@ -33,7 +33,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         corsPolicyBuilder => corsPolicyBuilder
-            .WithOrigins("http://localhost:5167")
+            .WithOrigins("http://localhost:5167", "http://51.75.133.155:5167")
             .AllowAnyMethod()
             .AllowAnyHeader());
 });

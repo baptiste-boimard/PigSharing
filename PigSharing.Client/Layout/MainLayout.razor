@@ -15,36 +15,41 @@
 
 @inherits LayoutComponentBase
 <div class="page">
-    <div class="sidebar">
+    <div class="sidebar" style="display: none">
         <NavMenu/>
     </div>
     <main>
-        <div class="top-row px-4">
+        <div style="display: flex; flex-direction: column; justify-content: center; text-align: center">
+            <h1>PigSharing</h1>
+            <h5>Patager vos photos</h5>
+        </div>
+        <div class="top-row px-4" style="display: flex; flex-direction: row; justify-content: space-around">
             @if (!StateManager.UserConnected)
             {
-                <a href="/register">S'incrire</a> 
-                <a href="/signin">Se Connecter</a>
+                <a style="color: #15b0d3" href="/register">S'incrire</a>
+                <a style="color: #15b0d3" href="/signin">Se Connecter</a>
 
-            } else {
-                <a href="/" @onclick="Logout">Se déconnecter</a>
-                <a href="/" @onclick="DeleteUser">Supprimer votre compte</a>
+            }
+            else
+            {
+                <a href="/" style="color: #15b0d3" @onclick="Logout">Se déconnecter</a>
+                <a href="/" style="color: #15b0d3" @onclick="DeleteUser">Supprimer votre compte</a>
 
             }
         </div>
-        
-        <div>
 
-            <h1>Hello, world!</h1>
+        <div style="display: flex; flex-direction: row; justify-content: space-around; margin-top: 30px">
+
 
             @if (StateManager.UserConnected)
             {
-                <button style="background-color: @(StateManager.ToggleAllImagePrivate ? "blue" : "transparent"); color: @(StateManager.ToggleAllImagePrivate ? "white" : "black");" @onclick="ToggleAllImagePrivate">
+                <button style="background-color: @(StateManager.ToggleAllImagePrivate ? "#15b0d3" : "transparent"); color: @(StateManager.ToggleAllImagePrivate ? "white" : "#15b0d3"); margin-bottom: 10px; width: 65px; height: 57px; border: #15b0d3 1px solid" @onclick="ToggleAllImagePrivate">
                     <i class="fas fa-book-open"></i>
                 </button>
-                <button style="background-color: @(StateManager.TogglePublics ? "blue" : "transparent"); color: @(StateManager.TogglePublics ? "white" : "black");" @onclick="TogglePublics">
+                <button style="background-color: @(StateManager.TogglePublics ? "#15b0d3" : "transparent"); color: @(StateManager.TogglePublics ? "white" : "#15b0d3"); width: 65px; height: 57px; border: #15b0d3 1px solid" @onclick="TogglePublics">
                     <i class="fas fa-images"></i>
                 </button>
-                <button @onclick="TriggerFileUpload">
+                <button style="width: 65px; height: 57px; background-color: transparent; color: #15b0d3; border: #15b0d3 1px solid" @onclick="TriggerFileUpload">
                     <i class="fas fa-upload"></i>
                 </button>
             }
@@ -55,10 +60,10 @@
 
             }
 
-            <InputFile id="fileInput" style="display:none" OnChange="HandleSelected" />
-            
+            <InputFile id="fileInput" style="display:none" OnChange="HandleSelected"/>
+
         </div>
-      <article class="content px-4">
+        <article class="content px-4">
             @Body
         </article>
     </main>
