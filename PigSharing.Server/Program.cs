@@ -32,10 +32,12 @@ builder.Services.AddDbContext<PostgresDbContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-        corsPolicyBuilder => corsPolicyBuilder
-            .WithOrigins("http://localhost:5167", "http://51.75.133.155:5167")
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+        builder =>
+        {
+            builder.WithOrigins("http://51.75.133.155:5167")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
 });
     
 

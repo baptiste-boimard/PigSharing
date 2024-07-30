@@ -10,7 +10,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5248") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://51.75.133.155:5248") });
 
 // Permet de charger mon appsettings.json sous un autre nom
 // builder.Configuration.AddJsonFile("client.appsettings.json", optional: false, reloadOnChange: true);
