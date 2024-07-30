@@ -13,6 +13,8 @@
 @inject IJSRuntime JsRuntime
 @inject ImageService ImageService
 
+@implements IDisposable
+
 @inherits LayoutComponentBase
 <div class="page">
     <div class="sidebar" style="display: none">
@@ -81,6 +83,12 @@
     protected override void OnInitialized()
     {
         StateManager.OnChange += StateHasChanged;
+        
+        
+        dotNetHelper = DotNetObjectReference.Create(this);
+        JsRuntime.InvokeVoidAsync("initializeGlobalDropzone", dotNetHelper);
+        
+        
     }
    
     // Détruit l'event d'écoute quand le composant est detruit
