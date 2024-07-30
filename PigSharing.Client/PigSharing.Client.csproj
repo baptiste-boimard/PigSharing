@@ -12,6 +12,10 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>client.appsettings.json</TargetPath>
         </None>
+        <None Update="web.config">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>client.web.config</TargetPath>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -32,6 +36,7 @@
       <_ContentIncludedByDefault Remove="output\wwwroot\sample-data\weather.json" />
       <_ContentIncludedByDefault Remove="output\wwwroot\_framework\blazor.boot.json" />
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+      <_ContentIncludedByDefault Remove="output\appsettings.json" />
     </ItemGroup>
 
     <ItemGroup>
