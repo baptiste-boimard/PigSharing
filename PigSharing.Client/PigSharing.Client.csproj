@@ -24,6 +24,7 @@
       <_ContentIncludedByDefault Remove="output\web.config" />
       <_ContentIncludedByDefault Remove="output\wwwroot\sample-data\weather.json" />
       <_ContentIncludedByDefault Remove="output\wwwroot\_framework\blazor.boot.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
     <ItemGroup>

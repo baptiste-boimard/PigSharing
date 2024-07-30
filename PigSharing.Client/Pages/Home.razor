@@ -121,6 +121,11 @@
                            </button>
                         </div>
                         }
+                        <div>
+                           <button @onclick="() => CopyUrlToClipboard(picture.Url)" style="background-color: transparent; cursor: pointer;">
+                              <i class="fas fa-copy" style="color: black;">Copier Url</i> 
+                           </button>
+                        </div>
                      </div>
                   </div>
                   }                  
@@ -183,88 +188,6 @@
    {
       StateManager.OnChange -= StateHasChanged;
    }
-
-   
-   // Changement des paramètres de la page
-   // protected override async Task OnParametersSetAsync() {
-   //    
-   //    // Passage à l'état connecté ou non
-   //    var account = await LocalStorage.GetItemAsync<Account>("account");
-   //      
-   //    if (account != null)
-   //    {
-   //       StateManager.UserConnected = true;
-   //       await ImageService.GetAllImages();
-   //       StateHasChanged();
-   //    }
-   //    else
-   //    {
-   //       StateManager.UserConnected = false;
-   //       await ImageService.GetPublics();
-   //       StateHasChanged();
-   //    }
-   //
-   // }
-   
-   // Méthode pour la séléction du fichier dans la boite de dialog
-   // private async void HandleSelected(InputFileChangeEventArgs e)
-   // {
-   //    selectedFile = e.File;
-   //    await UploadImage(selectedFile);
-   // }
-   
-   // Méthode pour l'ouverture de la boite de dialogue
-   // private async Task TriggerFileUpload()
-   // {
-   //    await JsRuntime.InvokeVoidAsync("triggerFileInputClick");
-   // }
-   
-   // Méthode pour demander l'upload de l'image
-   // private async Task UploadImage(IBrowserFile file)
-   // {
-   //    if (file != null)
-   //    {
-   //       var account = await LocalStorage.GetItemAsync<Account>("account");
-   //
-   //       var accountContent = new StringContent(
-   //          JsonSerializer.Serialize(account),
-   //          Encoding.UTF8,
-   //          "application/json");
-   //       
-   //       var content = new MultipartFormDataContent();
-   //       
-   //       var streamContent = new StreamContent(file.OpenReadStream());
-   //       streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
-   //       
-   //       content.Add(streamContent, "file", file.Name);
-   //       content.Add(accountContent, "account");
-   //       
-   //       var response = await Client.PostAsync("/api/picture/upload", content);
-   //       
-   //       if (response.IsSuccessStatusCode)
-   //       {
-   //          await GetPublics();
-   //          Navigation.NavigateTo("/");
-   //          StateHasChanged();   
-   //       }
-   //    }
-   // }
-   
-   // Permet d'obtnir les images publiques
-   // private async Task GetPublics()
-   // {
-   //    try
-   //    {
-   //       StateManager.Publics = await Client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
-   //       StateHasChanged();
-   //       
-   //    }
-   //    catch (Exception e)
-   //    {
-   //       Console.WriteLine(e);
-   //       throw;
-   //    }
-   // }
    
    // Ouvrir la photo en grand
    private void ShowLargePhoto(string url)
@@ -320,5 +243,11 @@
          throw;
       }
       
+   }
+   
+   // Permet de copier l'URL de l'image dans le presse papier
+   private async Task CopyUrlToClipboard(string url)
+   {
+      await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
    }
 }

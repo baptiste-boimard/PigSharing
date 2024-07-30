@@ -1,6 +1,6 @@
 {
-  "name": "ddd",
-  "short_name": "ddd",
+  "name": "PigSharing",
+  "short_name": "PigSharing",
   "id": "./",
   "start_url": "./",
   "display": "standalone",

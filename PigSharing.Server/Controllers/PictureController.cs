@@ -102,4 +102,23 @@ public class PictureController : ControllerBase
         
         return Ok();
     }
+
+    [HttpPost]
+    [Route("uploaddraganddrop")]
+    public async Task<IActionResult> UploadDragAndDrop([FromForm] IFormFile file)
+    {
+        try
+        {
+            var result = await _pictureService.AddPhotoAsync(file);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
+        
+        return Ok();
+    }
 }

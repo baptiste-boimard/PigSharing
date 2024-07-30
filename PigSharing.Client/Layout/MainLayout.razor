@@ -1,8 +1,10 @@
-﻿@using System.Text
+﻿@using System.Net.Http.Headers
+@using System.Text
 @using System.Text.Json
 @using Blazored.LocalStorage
 @using PigSharing.Client.Logic
 @using PigSharing.Share.Models
+@using Microsoft.JSInterop
 
 @inject HttpClient Client
 @inject ILocalStorageService LocalStorage
@@ -17,7 +19,6 @@
     <div class="sidebar">
         <NavMenu/>
     </div>
-
     <main>
         <div class="top-row px-4">
             @if (!StateManager.UserConnected)
@@ -51,15 +52,20 @@
 
             @if (!StateManager.UserConnected)
             {
-            <button>Photos Publiques</button>
+                <button>Photos Publiques</button>
 
             }
 
             <InputFile id="fileInput" style="display:none" OnChange="HandleSelected" />
             
         </div>
+        
+        @* Input caché pour recueillir le drag and drop *@
+        @* <div> *@
+        @*     <InputFile OnChange="HandleFilesSelected" style="display: none" id="hiddenInputFile" multiple /> *@
+        @* </div> *@
 
-        <article class="content px-4">
+      <article class="content px-4">
             @Body
         </article>
     </main>
@@ -67,6 +73,10 @@
 
 @code
 {
+
+    // Variable pour le drag and drop
+    private DotNetObjectReference<MainLayout> dotNetHelper;
+    
     private IBrowserFile? selectedFile;
     
     // Methode qui permet de suivre les chnagement dans le StateManager
@@ -155,6 +165,63 @@
             }
         }
     }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            dotNetHelper = DotNetObjectReference.Create(this);
+            await JsRuntime.InvokeVoidAsync("initializeGlobalDropzone", dotNetHelper);
+        }
+    }
+
+    [JSInvokable]
+    public async void OnImageDropped(string base64Image,string fileName, string fileType)
+    {
+        StateHasChanged();
+        await UploadDragAndDrop(base64Image, fileName, fileType);
+        
+    }
+
+    private async Task UploadDragAndDrop(string base64Image, string fileName, string fileType)
+    {
+        
+        StateHasChanged();
+
+        var account = await LocalStorage.GetItemAsync<Account>("account");
+        
+        // Transformation de notre base64 en images
+        var bytes = Convert.FromBase64String(base64Image);
+        
+        var content = new MultipartFormDataContent();
+
+        var accountContent = new StringContent(
+            JsonSerializer.Serialize(account),
+            Encoding.UTF8,
+            "application/json");
+        content.Add(accountContent);
+        
+        var byteArrayContent = new ByteArrayContent(bytes);
+        byteArrayContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(fileType);
+        content.Add(byteArrayContent, "file", fileName);
+
+        var response = await Client.PostAsync("/api/picture/upload", content);
+        
+        if (response.IsSuccessStatusCode)
+        {
+            
+
+            await ImageService.GetAllImages(account);
+            await ImageService.GetPublics();
+            Navigation.NavigateTo("/");
+            StateHasChanged();   
+        }
+    }
+    
+    
+    
+    
+    
     
     // Méthode d'affichage des photos publics
     private async Task TogglePublics()

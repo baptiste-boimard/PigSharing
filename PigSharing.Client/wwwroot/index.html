@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ddd</title>
+    <title>PigSharing</title>
     <base href="/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
@@ -14,9 +14,57 @@
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
     <link href="_framework/blazor.webassembly.js" rel="preload" as="script" />
+<!--    <script>-->
+<!--        window.addEventListener('DOMContentLoaded', (event) => {-->
+<!--            const preventDefaults = (e) => {-->
+<!--                e.preventDefault();-->
+<!--                e.stopPropagation();-->
+<!--            }-->
+
+<!--            const highlight = (e) => {-->
+<!--                document.body.classList.add('highlight');-->
+<!--            }-->
+
+<!--            const unhighlight = (e) => {-->
+<!--                document.body.classList.remove('highlight');-->
+<!--            }-->
+
+<!--            const handleDrop = async (e) => {-->
+<!--                let dt = e.dataTransfer;-->
+<!--                let files = dt.files;-->
+
+<!--                if (files.length) {-->
+<!--                    // Passez les fichiers à Blazor via l'interopérabilité JS-->
+<!--                    const fileArray = [];-->
+<!--                    for (let i = 0; i < files.length; i++) {-->
+<!--                        fileArray.push(files[i].name);-->
+<!--                    }-->
+<!--                    await DotNet.invokeMethodAsync('PigSharing.Client', 'ReceiveFiles', fileArray);-->
+<!--                }-->
+<!--            }-->
+
+<!--            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {-->
+<!--                document.body.addEventListener(eventName, preventDefaults, false);-->
+<!--            });-->
+
+<!--            ['dragenter', 'dragover'].forEach(eventName => {-->
+<!--                document.body.addEventListener(eventName, highlight, false);-->
+<!--            });-->
+
+<!--            ['dragleave', 'drop'].forEach(eventName => {-->
+<!--                document.body.addEventListener(eventName, unhighlight, false);-->
+<!--            });-->
+
+<!--            document.body.addEventListener('drop', handleDrop, false);-->
+<!--        });-->
+<!--    </script>-->
 </head>
 
 <body>
+    <app>
+        <component type="typeof(App)" render-mode="WebAssemblyPrerendered" />
+    </app>
+    
     <div id="app">
         <svg class="loading-progress">
             <circle r="40%" cx="50%" cy="50%" />
@@ -30,6 +78,7 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+    
     <script src="_framework/blazor.webassembly.js"></script>
     
     <script>navigator.serviceWorker.register('service-worker.js');</script>
@@ -37,6 +86,30 @@
     <script>
         window.triggerFileInputClick = function () {
             document.getElementById('fileInput').click();
+        };
+    </script>
+<!--    Script pour permettre le drag and drop sur toute la page-->
+    <script>
+        window.initializeGlobalDropzone = (dotNetHelper) => {
+            document.addEventListener('dragover', (event) => {
+                event.preventDefault();
+            });
+
+            document.addEventListener('drop', async (event) => {
+                event.preventDefault();
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    const file = files[0];
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        const base64Image = e.target.result.split(',')[1];
+                        dotNetHelper.invokeMethodAsync('OnImageDropped', base64Image, file.name, file.type);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
         };
     </script>
 </body>
