@@ -7,10 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Update="appsettings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <TargetPath>server.appsettings.json</TargetPath>
-        </None>
+<!--        <None Update="appsettings.json">-->
+<!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+<!--            <TargetPath>server.appsettings.json</TargetPath>-->
+<!--        </None>-->
         <None Update="web.config">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>server.web.config</TargetPath>

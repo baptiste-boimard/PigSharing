@@ -7,7 +7,7 @@ using PigSharing.Server.Service;
 var builder = WebApplication.CreateBuilder(args);
 
 // Permet de charger mon appsettings.json sous un autre nom
-builder.Configuration.AddJsonFile("server.appsettings.json", optional: false, reloadOnChange: true);
+// builder.Configuration.AddJsonFile("server.appsettings.json", optional: false, reloadOnChange: true);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
