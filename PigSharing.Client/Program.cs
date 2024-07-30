@@ -1,8 +1,6 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.JSInterop;
 using PigSharing.Client;
 using PigSharing.Client.Logic;
 using PigSharing.Share.Models;
