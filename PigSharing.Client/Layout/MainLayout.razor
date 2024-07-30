@@ -13,7 +13,6 @@
 @inject IJSRuntime JsRuntime
 @inject ImageService ImageService
 
-
 @inherits LayoutComponentBase
 <div class="page">
     <div class="sidebar">
@@ -59,12 +58,6 @@
             <InputFile id="fileInput" style="display:none" OnChange="HandleSelected" />
             
         </div>
-        
-        @* Input caché pour recueillir le drag and drop *@
-        @* <div> *@
-        @*     <InputFile OnChange="HandleFilesSelected" style="display: none" id="hiddenInputFile" multiple /> *@
-        @* </div> *@
-
       <article class="content px-4">
             @Body
         </article>
@@ -172,6 +165,7 @@
         {
             dotNetHelper = DotNetObjectReference.Create(this);
             await JsRuntime.InvokeVoidAsync("initializeGlobalDropzone", dotNetHelper);
+
         }
     }
 
@@ -209,19 +203,12 @@
         
         if (response.IsSuccessStatusCode)
         {
-            
-
             await ImageService.GetAllImages(account);
             await ImageService.GetPublics();
             Navigation.NavigateTo("/");
             StateHasChanged();   
         }
     }
-    
-    
-    
-    
-    
     
     // Méthode d'affichage des photos publics
     private async Task TogglePublics()

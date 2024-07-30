@@ -110,15 +110,12 @@ public class PictureController : ControllerBase
         try
         {
             var result = await _pictureService.AddPhotoAsync(file);
-
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
-        
-        
         return Ok();
     }
 }
