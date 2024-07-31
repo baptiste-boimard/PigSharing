@@ -8,26 +8,16 @@ public class StateManager
     private bool _userConnected= false;
     private bool _toggleAllImagePrivate = false;
     private bool _togglePublics = false;
-    private Picture[] _publics = new Picture[] {};
-    private Picture[] _allImages = new Picture[] {};
+    private Picture[]? _publics = new Picture[] {};
+    private Picture[]? _allImages = new Picture[] {};
     
-    
-    // public bool UserConnected { get => _userConnected; set
-    //     {if (_userConnected != value)
-    //         {
-    //             _userConnected = value;
-    //             NotifyStateChanged();
-    //         }
-    //     }
-    // }
-
     public bool UserConnected
     {
         get => _userConnected;
         set => SetField(ref _userConnected, value);
     }
     
-    public Picture[] Publics
+    public Picture[]? Publics
     {
         get => _publics;
         set => SetField(ref _publics, value);
