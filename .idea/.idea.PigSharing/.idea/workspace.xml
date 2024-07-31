@@ -233,7 +233,7 @@
       <workItem from="1722372007345" duration="12165000" />
       <workItem from="1722424512953" duration="12792000" />
       <workItem from="1722449377258" duration="9024000" />
-      <workItem from="1722465173270" duration="2865000" />
+      <workItem from="1722465173270" duration="4476000" />
     </task>
     <task id="LOCAL-00001" summary="Modif pour essayer de comprendre le problème">
       <option name="closed" value="true" />
@@ -319,6 +319,20 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/PigSharing.Client/Pages/Home.razor</url>
+          <line>149</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Pages\Home.razor" isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
+            <startOffsets>
+              <option value="-1" />
+            </startOffsets>
+            <endOffsets>
+              <option value="-1" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

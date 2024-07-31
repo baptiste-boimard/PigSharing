@@ -55,7 +55,7 @@ public class ImageService
     }
     
     // Permet d'obtenir les images publiques
-    public async Task GetPublics()
+    public async Task<Picture[]> GetPublics()
     {
         try
         {
@@ -67,7 +67,7 @@ public class ImageService
            }
            Console.WriteLine();
 
-           // return _stateManager.Publics;
+           return _stateManager.Publics;
         }
         catch (Exception e)
         {
