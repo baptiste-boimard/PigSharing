@@ -7,6 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Update="certs\certificat.pfx">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
 <!--        <None Update="appsettings.json">-->
 <!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
 <!--            <TargetPath>server.appsettings.json</TargetPath>-->
@@ -46,6 +52,10 @@
       <_ContentIncludedByDefault Remove="output\PigSharing.Server.deps.json" />
       <_ContentIncludedByDefault Remove="output\PigSharing.Server.runtimeconfig.json" />
       <_ContentIncludedByDefault Remove="output\wwwroot\_framework\blazor.boot.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Certificates\" />
     </ItemGroup>
 
 <!--    <ItemGroup>-->

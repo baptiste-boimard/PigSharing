@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Blazored.LocalStorage;
 using Microsoft.EntityFrameworkCore;
 using PigSharing.Server.Database;
@@ -34,12 +35,26 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("http://51.75.133.155:5167")
+            builder.WithOrigins("https://51.75.133.155:5167")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
 });
     
+
+// Configure Kestrel to use HTTPS with the specified certificate
+var kestrelConfig = builder.Configuration.GetSection("Kestrel:Endpoints:Https:Certificate");
+var certificatePath = kestrelConfig.GetValue<string>("Path");
+var certificatePassword = kestrelConfig.GetValue<string>("Password");
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ConfigureHttpsDefaults(httpsOptions =>
+    {
+        httpsOptions.ServerCertificate = new X509Certificate2(certificatePath, certificatePassword);
+    });
+});
+
 
 var app = builder.Build();
 
