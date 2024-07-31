@@ -5,7 +5,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PigSharing.Share.Models;
+using PigSharing.Client.Models;
 
 namespace PigSharing.Client.Logic;
 

@@ -1,4 +1,4 @@
-namespace PigSharing.Share.Models;
+namespace PigSharing.Server.Models;
 
 public class Account
 {

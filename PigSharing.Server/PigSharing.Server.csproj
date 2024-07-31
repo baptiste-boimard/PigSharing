@@ -28,20 +28,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PigSharing.Client\PigSharing.Client.csproj" />
-      <ProjectReference Include="..\PigSharing.Share\PigSharing.Share.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="output\output\web.config" />
-      <_ContentIncludedByDefault Remove="output\web.config" />
-      <_ContentIncludedByDefault Remove="output\appsettings.Development.json" />
-      <_ContentIncludedByDefault Remove="output\appsettings.json" />
-      <_ContentIncludedByDefault Remove="output\client.appsettings.json" />
-      <_ContentIncludedByDefault Remove="output\output\appsettings.json" />
-      <_ContentIncludedByDefault Remove="output\output\wwwroot\_framework\blazor.boot.json" />
-      <_ContentIncludedByDefault Remove="output\PigSharing.Server.deps.json" />
-      <_ContentIncludedByDefault Remove="output\PigSharing.Server.runtimeconfig.json" />
-      <_ContentIncludedByDefault Remove="output\wwwroot\_framework\blazor.boot.json" />
     </ItemGroup>
     
 </Project>

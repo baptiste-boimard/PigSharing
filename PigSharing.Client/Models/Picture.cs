@@ -1,4 +1,5 @@
-namespace PigSharing.Share.Models;
+
+namespace PigSharing.Client.Models;
 
 public class Picture
 {

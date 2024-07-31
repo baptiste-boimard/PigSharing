@@ -5,9 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
-
-
-
+    
     <ItemGroup>
         <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     </ItemGroup>
@@ -27,19 +25,7 @@
         <PackageReference Include="Microsoft.NET.Runtime.WebAssembly.Sdk" Version="8.0.7" />
         <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="8.0.7" />
     </ItemGroup>
-
-    <ItemGroup>
-        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="output\web.config" />
-      <_ContentIncludedByDefault Remove="output\wwwroot\sample-data\weather.json" />
-      <_ContentIncludedByDefault Remove="output\wwwroot\_framework\blazor.boot.json" />
-      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
-      <_ContentIncludedByDefault Remove="output\appsettings.json" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <Reference Include="Microsoft.AspNetCore.Http.Features">
         <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.7\Microsoft.AspNetCore.Http.Features.dll</HintPath>
@@ -59,10 +45,6 @@
       <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
         <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.7\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
       </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\PigSharing.Share\PigSharing.Share.csproj" />
     </ItemGroup>
     
 </Project>

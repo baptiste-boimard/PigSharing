@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PigSharing.Server.Database;
-using PigSharing.Share.Models;
+using PigSharing.Server.Models;
 
 namespace PigSharing.Server.Repositories;
 

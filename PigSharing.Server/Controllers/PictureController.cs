@@ -1,8 +1,8 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using PigSharing.Server.Models;
 using PigSharing.Server.Repositories;
 using PigSharing.Server.Service;
-using PigSharing.Share.Models;
 
 namespace PigSharing.Server.Controllers;
 

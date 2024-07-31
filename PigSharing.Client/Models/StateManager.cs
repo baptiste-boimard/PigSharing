@@ -1,6 +1,4 @@
-using System.Linq.Expressions;
-
-namespace PigSharing.Share.Models;
+namespace PigSharing.Client.Models;
 
 public class StateManager
 {

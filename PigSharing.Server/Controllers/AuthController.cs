@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using PigSharing.Server.Models;
 using PigSharing.Server.Repositories;
-using PigSharing.Share.Models;
 
 namespace PigSharing.Server.Controller;
 

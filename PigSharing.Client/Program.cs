@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PigSharing.Client;
 using PigSharing.Client.Logic;
-using PigSharing.Share.Models;
+using PigSharing.Client.Models;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

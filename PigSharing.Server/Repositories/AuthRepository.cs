@@ -2,9 +2,9 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using PigSharing.Server.Database;
+using PigSharing.Server.Models;
 using PigSharing.Server.Service;
-using PigSharing.Share.Models;
-using Payload = PigSharing.Share.Models.Payload;
+using Payload = PigSharing.Server.Models.Payload;
 
 namespace PigSharing.Server.Repositories;
 
