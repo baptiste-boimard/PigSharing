@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ignorer les dossiers spécifiques à JetBrains IDEs
+.idea/

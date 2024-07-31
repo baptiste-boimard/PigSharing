@@ -20,8 +20,7 @@ public class PictureController : ControllerBase
     }
 
     [HttpPost]
-    [Route("upload")]
-    [RequestSizeLimit(10485760)] // 10 MB
+    [Route("upload")] 
     public async Task<IActionResult> Upload([FromForm]IFormFile file, [FromForm]string account)
     {
         

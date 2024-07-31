@@ -66,6 +66,8 @@ public class ImageService
                Console.WriteLine($"{picture.Created}");
            }
            Console.WriteLine();
+
+           // return _stateManager.Publics;
         }
         catch (Exception e)
         {

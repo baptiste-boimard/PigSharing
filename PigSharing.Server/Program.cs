@@ -15,10 +15,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 // Configurer Kestrel pour accepter des fichiers plus volumineux
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.Limits.MaxRequestBodySize = 10485760; // 10 MB
-});
+// builder.WebHost.ConfigureKestrel(serverOptions =>
+// {
+//     serverOptions.Limits.MaxRequestBodySize = 10485760; // 10 MB
+// });
 
 // Ajout des repositories
 builder.Services.AddScoped<AuthRepository>();
@@ -38,7 +38,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("https://punky.chickenkiller:4244")
+            // builder.WithOrigins("https://punky.chickenkiller:4244")
+            builder.WithOrigins("http://localhost:5167")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
