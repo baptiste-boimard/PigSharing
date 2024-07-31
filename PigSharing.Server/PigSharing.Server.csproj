@@ -28,6 +28,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PigSharing.Client\PigSharing.Client.csproj" />
+      <ProjectReference Include="..\PigSharing.Share\PigSharing.Share.csproj" />
     </ItemGroup>
 
     <ItemGroup>

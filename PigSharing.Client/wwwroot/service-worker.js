@@ -12,7 +12,7 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-    console.log('Fetching:', event.request.url);
+    // console.log('Fetching:', event.request.url);
     event.respondWith(
         fetch(event.request).catch(function() {
             return new Response('Service Worker fetch failed.');
