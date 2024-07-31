@@ -54,12 +54,18 @@ public class ImageService
         return false;
     }
     
-    // Permet d'obtnir les images publiques
+    // Permet d'obtenir les images publiques
     public async Task GetPublics()
     {
         try
         {
            _stateManager.Publics  = await _client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
+
+           foreach (var picture in _stateManager.Publics)
+           {
+               Console.WriteLine($"{picture.Created}");
+           }
+           Console.WriteLine();
         }
         catch (Exception e)
         {

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using PigSharing.Server.Database;
 using PigSharing.Server.Repositories;
 using PigSharing.Server.Service;
 using PigSharing.Share.Models;
@@ -59,7 +58,7 @@ public class PictureController : ControllerBase
         try
         {
             var response = _pictureRepository.GetAllImages(idAccount);
-
+            
             return Ok(response.Result);
         }
         catch (Exception e)
