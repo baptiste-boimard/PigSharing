@@ -31,7 +31,6 @@
     </div>
     
     <script src="_framework/blazor.webassembly.js"></script>
-    <script>navigator.serviceWorker.register('service-worker.js?id=4.1.0');</script>
     
 <!--    Permet de similer un click sur element de la page-->
     <script>
@@ -62,6 +61,20 @@
                 }
             });
         };
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }).catch(function(error) {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        } else {
+            console.log('Service Workers are not supported in this browser.');
+        }
     </script>
 </body>
 </html>

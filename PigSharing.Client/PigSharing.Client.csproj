@@ -4,7 +4,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     </PropertyGroup>
 
 
@@ -13,28 +12,7 @@
         <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     </ItemGroup>
     
-<!--    <ItemGroup>-->
-<!--        <None Update="wwwroot/service-worker.published.js">-->
-<!--            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>-->
-<!--            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>-->
-<!--        </None>-->
-<!--    </ItemGroup>-->
-    
     <ItemGroup>
-        <None Update="wwwroot/service-worker.published.js">
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </None>
-    </ItemGroup>
-    
-    
-    
-    
-    <ItemGroup>
-<!--        <None Update="appsettings.json">-->
-<!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
-<!--            <TargetPath>client.appsettings.json</TargetPath>-->
-<!--        </None>-->
         <None Update="web.config">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>client.web.config</TargetPath>

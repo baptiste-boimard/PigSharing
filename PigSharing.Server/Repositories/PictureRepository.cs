@@ -105,33 +105,4 @@ public class PictureRepository
 
         return false;
     }
-
-    public async Task<bool> DeleteAllImagesOfOneUser(Guid accountId)
-    {
-        var pictures = _postgresDbContext.Pictures
-            .Where(p => p.AccountId == accountId)
-            .ToArrayAsync()
-            .Result;
-
-        foreach (var picture in pictures)
-        {
-            _postgresDbContext.Pictures.Remove(picture);
-        }
-
-        await _postgresDbContext.SaveChangesAsync();
-
-        var picturesAfterRemove = _postgresDbContext.Pictures
-            .Where(p => p.AccountId == accountId)
-            .ToArrayAsync()
-            .Result;
-        
-        if (picturesAfterRemove == null)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-  
 }

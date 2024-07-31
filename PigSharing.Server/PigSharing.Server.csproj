@@ -5,18 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
-
-<!--    <ItemGroup>-->
-<!--        <None Update="certs\certificat.pfx">-->
-<!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
-<!--        </None>-->
-<!--    </ItemGroup>-->
-
+    
     <ItemGroup>
-<!--        <None Update="appsettings.json">-->
-<!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
-<!--            <TargetPath>server.appsettings.json</TargetPath>-->
-<!--        </None>-->
         <None Update="web.config">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>server.web.config</TargetPath>
@@ -38,7 +28,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PigSharing.Client\PigSharing.Client.csproj" />
-<!--      <ProjectReference Include="..\PigSharing.Share\PigSharing.Share.csproj" />-->
     </ItemGroup>
 
     <ItemGroup>
@@ -53,15 +42,5 @@
       <_ContentIncludedByDefault Remove="output\PigSharing.Server.runtimeconfig.json" />
       <_ContentIncludedByDefault Remove="output\wwwroot\_framework\blazor.boot.json" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Certificates\" />
-    </ItemGroup>
-
-<!--    <ItemGroup>-->
-<!--      <Reference Include="PigSharing.Share">-->
-<!--        <HintPath>bin\Debug\net8.0\PigSharing.Share.dll</HintPath>-->
-<!--      </Reference>-->
-<!--    </ItemGroup>-->
-
+    
 </Project>

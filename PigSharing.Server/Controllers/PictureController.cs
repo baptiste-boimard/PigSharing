@@ -22,6 +22,7 @@ public class PictureController : ControllerBase
 
     [HttpPost]
     [Route("upload")]
+    [RequestSizeLimit(10485760)] // 10 MB
     public async Task<IActionResult> Upload([FromForm]IFormFile file, [FromForm]string account)
     {
         
@@ -100,22 +101,6 @@ public class PictureController : ControllerBase
            }
         }
         
-        return Ok();
-    }
-
-    [HttpPost]
-    [Route("uploaddraganddrop")]
-    public async Task<IActionResult> UploadDragAndDrop([FromForm] IFormFile file)
-    {
-        try
-        {
-            var result = await _pictureService.AddPhotoAsync(file);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
         return Ok();
     }
 }
