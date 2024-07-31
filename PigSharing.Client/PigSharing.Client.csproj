@@ -6,16 +6,20 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     </PropertyGroup>
-    
-    
-    
+
+
 
     <ItemGroup>
-        <None Update="wwwroot/service-worker.published.js">
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </None>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     </ItemGroup>
+    
+<!--    <ItemGroup>-->
+<!--        <None Update="wwwroot/service-worker.published.js">-->
+<!--            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>-->
+<!--            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>-->
+<!--        </None>-->
+<!--    </ItemGroup>-->
+    
     <ItemGroup>
         <None Update="wwwroot/service-worker.published.js">
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

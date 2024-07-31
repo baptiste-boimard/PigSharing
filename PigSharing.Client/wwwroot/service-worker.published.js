@@ -1,49 +1,50 @@
-// Ceci est la liste des fichiers à mettre en cache
-self.assetsManifest = {
-    "assets": [
-        {
-            "hash": "sha256-....",
-            "url": "_framework/blazor.webassembly.js"
-        },
-        // Ajoutez ici tous les fichiers à mettre en cache
-    ],
-    "version": "v1.0"
-};
+// Caution! Be sure you understand the caveats before publishing an application with
+// offline support. See https://aka.ms/blazor-offline-considerations
 
-const CACHE_NAME = `blazor-cache-${self.assetsManifest.version}`;
-const ASSETS_TO_CACHE = self.assetsManifest.assets.map(asset => asset.url);
+const version = "4.4.0";
 
-self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(ASSETS_TO_CACHE);
-        })
-    );
-});
+self.importScripts('./service-worker-assets.js?id=' + version);
+self.addEventListener('install', event => event.waitUntil(onInstall(event)));
+self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
+self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames
-                    .filter(cacheName => cacheName !== CACHE_NAME)
-                    .map(cacheName => caches.delete(cacheName))
-            );
-        })
-    );
-});
+const cacheNamePrefix = 'offline-cache-';
+const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
+const offlineAssetsInclude = [ /\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.json$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/, /\.blat$/, /\.dat$/ ];
+const offlineAssetsExclude = [ /^service-worker\.js$/ ];
 
-self.addEventListener('fetch', event => {
+async function onInstall(event) {
+    console.info('Service worker: Install');
+
+    // Fetch and cache all matching items from the assets manifest
+    const assetsRequests = self.assetsManifest.assets
+        .filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url)))
+        .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
+        .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache' }));
+    await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
+}
+
+async function onActivate(event) {
+    console.info('Service worker: Activate');
+
+    // Delete unused caches
+    const cacheKeys = await caches.keys();
+    await Promise.all(cacheKeys
+        .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
+        .map(key => caches.delete(key)));
+}
+
+async function onFetch(event) {
+    let cachedResponse = null;
     if (event.request.method === 'GET') {
-        event.respondWith(
-            caches.match(event.request).then(cachedResponse => {
-                return cachedResponse || fetch(event.request).then(response => {
-                    return caches.open(CACHE_NAME).then(cache => {
-                        cache.put(event.request, response.clone());
-                        return response;
-                    });
-                });
-            })
-        );
+        // For all navigation requests, try to serve index.html from cache
+        // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
+        const shouldServeIndexHtml = event.request.mode === 'navigate';
+
+        const request = shouldServeIndexHtml ? 'index.html' : event.request;
+        const cache = await caches.open(cacheName);
+        cachedResponse = await cache.match(request);
     }
-});
+
+    return cachedResponse || fetch(event.request);
+}

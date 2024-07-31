@@ -35,7 +35,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("https://51.75.133.155:5167")
+            builder.WithOrigins("http://localhost:5167")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
@@ -43,17 +43,17 @@ builder.Services.AddCors(options =>
     
 
 // Configure Kestrel to use HTTPS with the specified certificate
-var kestrelConfig = builder.Configuration.GetSection("Kestrel:Endpoints:Https:Certificate");
-var certificatePath = kestrelConfig.GetValue<string>("Path");
-var certificatePassword = kestrelConfig.GetValue<string>("Password");
-
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ConfigureHttpsDefaults(httpsOptions =>
-    {
-        httpsOptions.ServerCertificate = new X509Certificate2(certificatePath, certificatePassword);
-    });
-});
+// var kestrelConfig = builder.Configuration.GetSection("Kestrel:Endpoints:Https:Certificate");
+// var certificatePath = kestrelConfig.GetValue<string>("Path");
+// var certificatePassword = kestrelConfig.GetValue<string>("Password");
+//
+// builder.WebHost.ConfigureKestrel(serverOptions =>
+// {
+//     serverOptions.ConfigureHttpsDefaults(httpsOptions =>
+//     {
+//         httpsOptions.ServerCertificate = new X509Certificate2(certificatePath, certificatePassword);
+//     });
+// });
 
 
 var app = builder.Build();
