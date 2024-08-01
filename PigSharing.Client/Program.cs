@@ -10,7 +10,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://punky.chickenkiller:4245") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://punky.chickenkiller.com:4245") });
 // builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5248") });
 
 // Service permet de stocker les variables utiles pour le front
