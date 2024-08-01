@@ -12,7 +12,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7311ede-f9d2-4188-ac87-3892522e5bdc" name="Changes" comment="" />
+    <list default="true" id="e7311ede-f9d2-4188-ac87-3892522e5bdc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PigSharing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PigSharing/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PigSharing.Client/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PigSharing.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PigSharing.Client/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/wwwroot/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PigSharing.Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Server/Program.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,31 +61,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.PigSharing.Client: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.PigSharing.Client: http.executor": "Debug",
-    ".NET Launch Settings Profile.PigSharing.Client: https.executor": "Debug",
-    ".NET Launch Settings Profile.PigSharing.Server: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.PigSharing.Server: http.executor": "Debug",
-    ".NET Launch Settings Profile.PigSharing.Server: https.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.PigSharing.Client: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.PigSharing.Client: http.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.PigSharing.Client: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.PigSharing.Server: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.PigSharing.Server: http.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.PigSharing.Server: https.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Punky\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Punky\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\Punky\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\Punky\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\Punky\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\Punky\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Compound.Unnamed">
     <configuration name="Unnamed" type="CompoundRunConfigurationType">
       <toRun name="PigSharing.Client: http" type="LaunchSettings" />
@@ -233,7 +240,8 @@
       <workItem from="1722372007345" duration="12165000" />
       <workItem from="1722424512953" duration="12792000" />
       <workItem from="1722449377258" duration="9024000" />
-      <workItem from="1722465173270" duration="6745000" />
+      <workItem from="1722465173270" duration="7658000" />
+      <workItem from="1722473359092" duration="1030000" />
     </task>
     <task id="LOCAL-00001" summary="Modif pour essayer de comprendre le problème">
       <option name="closed" value="true" />
@@ -270,29 +278,69 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
-          <line>74</line>
-          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
+          <line>33</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'UploadImage'">
             <startOffsets>
-              <option value="2331" />
+              <option value="993" />
             </startOffsets>
             <endOffsets>
-              <option value="2377" />
+              <option value="1139" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="1" />
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/PigSharing.Server/Controllers/PictureController.cs</url>
-          <line>43</line>
-          <properties documentPath="E:\Projets\PigSharing\PigSharing.Server\Controllers\PictureController.cs" containingFunctionPresentation="Method 'GetAllPublic'">
+          <line>26</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Server\Controllers\PictureController.cs" containingFunctionPresentation="Method 'Upload'">
             <startOffsets>
-              <option value="1260" />
+              <option value="766" />
             </startOffsets>
             <endOffsets>
-              <option value="1287" />
+              <option value="821" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="2" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/PigSharing.Server/Repositories/PictureRepository.cs</url>
+          <line>17</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Server\Repositories\PictureRepository.cs" containingFunctionPresentation="Method 'Upload'">
+            <startOffsets>
+              <option value="462" />
+            </startOffsets>
+            <endOffsets>
+              <option value="717" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/PigSharing.Server/Controllers/PictureController.cs</url>
+          <line>28</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Server\Controllers\PictureController.cs" containingFunctionPresentation="Method 'Upload'">
+            <startOffsets>
+              <option value="839" />
+            </startOffsets>
+            <endOffsets>
+              <option value="972" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/PigSharing.Client/Layout/MainLayout.razor</url>
+          <line>191</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Layout\MainLayout.razor" isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
+            <startOffsets>
+              <option value="-1" />
+            </startOffsets>
+            <endOffsets>
+              <option value="-1" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/PigSharing.Server/Controllers/PictureController.cs</url>
@@ -305,59 +353,7 @@
               <option value="1191" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
-          <line>61</line>
-          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
-            <startOffsets>
-              <option value="1827" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1924" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
-          <line>64</line>
-          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
-            <startOffsets>
-              <option value="2029" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2057" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
-          <line>71</line>
-          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
-            <startOffsets>
-              <option value="2228" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2306" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
-          <line>68</line>
-          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
-            <startOffsets>
-              <option value="2158" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2192" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="8" />
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

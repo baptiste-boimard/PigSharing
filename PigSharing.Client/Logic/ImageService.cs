@@ -62,11 +62,11 @@ public class ImageService
            // _stateManager.Publics  = await _client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
            var response  = await _client.GetAsync("/api/picture/getallpublics");
            
-           Console.WriteLine(response);
+           // Console.WriteLine(response);
 
            var responseString = await response.Content.ReadAsStringAsync();
            
-           Console.WriteLine(responseString);
+           // Console.WriteLine(responseString);
            
            
            _stateManager.Publics = await response.Content.ReadFromJsonAsync<Picture[]>();

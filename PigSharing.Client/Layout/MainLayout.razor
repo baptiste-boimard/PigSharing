@@ -83,12 +83,6 @@
     protected override void OnInitialized()
     {
         StateManager.OnChange += StateHasChanged;
-        
-        
-        dotNetHelper = DotNetObjectReference.Create(this);
-        JsRuntime.InvokeVoidAsync("initializeGlobalDropzone", dotNetHelper);
-        
-        
     }
    
     // Détruit l'event d'écoute quand le composant est detruit
@@ -185,7 +179,7 @@
     [JSInvokable]
     public async void OnImageDropped(string base64Image,string fileName, string fileType)
     {
-        StateHasChanged();
+        // StateHasChanged();
         await UploadDragAndDrop(base64Image, fileName, fileType);
         
     }
