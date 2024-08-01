@@ -38,8 +38,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            // builder.WithOrigins("https://punky.chickenkiller:4244")
-            builder.WithOrigins("http://localhost:5167")
+            builder.WithOrigins("https://punky.chickenkiller:4244")
+            // builder.WithOrigins("http://localhost:5167")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });

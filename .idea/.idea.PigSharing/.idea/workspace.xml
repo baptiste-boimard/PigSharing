@@ -57,10 +57,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Launch Settings Profile.PigSharing.Client: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.PigSharing.Client: http.executor": "Debug",
+    ".NET Launch Settings Profile.PigSharing.Client: http.executor": "Run",
     ".NET Launch Settings Profile.PigSharing.Client: https.executor": "Debug",
     ".NET Launch Settings Profile.PigSharing.Server: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.PigSharing.Server: http.executor": "Debug",
+    ".NET Launch Settings Profile.PigSharing.Server: http.executor": "Run",
     ".NET Launch Settings Profile.PigSharing.Server: https.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
@@ -233,7 +233,7 @@
       <workItem from="1722372007345" duration="12165000" />
       <workItem from="1722424512953" duration="12792000" />
       <workItem from="1722449377258" duration="9024000" />
-      <workItem from="1722465173270" duration="4476000" />
+      <workItem from="1722465173270" duration="5620000" />
     </task>
     <task id="LOCAL-00001" summary="Modif pour essayer de comprendre le problème">
       <option name="closed" value="true" />
@@ -273,10 +273,10 @@
           <line>63</line>
           <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
             <startOffsets>
-              <option value="1934" />
+              <option value="1945" />
             </startOffsets>
             <endOffsets>
-              <option value="1980" />
+              <option value="1991" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />
@@ -312,10 +312,10 @@
           <line>61</line>
           <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
             <startOffsets>
-              <option value="1824" />
+              <option value="1835" />
             </startOffsets>
             <endOffsets>
-              <option value="1921" />
+              <option value="1932" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
