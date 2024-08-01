@@ -38,10 +38,21 @@ public class ImageService
      
         var content = new MultipartFormDataContent();
      
-        var streamContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 100 * 1024 * 1024));
-        streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+        // var streamContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 100 * 1024 * 1024));
+        // streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+        
+        using (var stream = file.OpenReadStream(maxAllowedSize: 100 * 1024 * 1024))
+        {
+            var buffer = new byte[file.Size];
+            await stream.ReadAsync(buffer, 0, (int)file.Size);
+
+            // Ajouter le contenu du fichier au multipart
+            var byteArrayContent = new ByteArrayContent(buffer);
+            byteArrayContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+            content.Add(byteArrayContent, "file", file.Name);
+        }
      
-        content.Add(streamContent, "file", file.Name);
+        // content.Add(streamContent, "file", file.Name);
         content.Add(accountContent, "account");
      
         var response = await _client.PostAsync("/api/picture/upload", content);
