@@ -23,7 +23,7 @@ builder.Services.AddControllers();
 
 builder.Services.Configure<FormOptions>(options =>
 {
-    options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10 MB
+    options.MultipartBodyLengthLimit = 100 * 1024 * 1024; // 100 MB
 });
 
 // Ajout des repositories
