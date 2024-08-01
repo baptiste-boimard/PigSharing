@@ -1,5 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using PigSharing.Server.Database;
 using PigSharing.Server.Repositories;
@@ -19,6 +20,11 @@ builder.Services.AddControllers();
 // {
 //     serverOptions.Limits.MaxRequestBodySize = 10485760; // 10 MB
 // });
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10 MB
+});
 
 // Ajout des repositories
 builder.Services.AddScoped<AuthRepository>();

@@ -38,7 +38,7 @@ public class ImageService
      
         var content = new MultipartFormDataContent();
      
-        var streamContent = new StreamContent(file.OpenReadStream());
+        var streamContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024));
         streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
      
         content.Add(streamContent, "file", file.Name);

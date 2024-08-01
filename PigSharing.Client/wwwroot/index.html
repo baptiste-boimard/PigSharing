@@ -55,7 +55,6 @@
                     reader.onload = (e) => {
                         const base64Image = e.target.result.split(',')[1];
                         dotNetHelper.invokeMethodAsync('OnImageDropped', base64Image, file.name, file.type);
-                        console.log("Demande d'uplaod drag and drop");
                     };
 
                     reader.readAsDataURL(file);

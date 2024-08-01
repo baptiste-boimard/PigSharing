@@ -14,11 +14,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e7311ede-f9d2-4188-ac87-3892522e5bdc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PigSharing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PigSharing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PigSharing.Client/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/Layout/MainLayout.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PigSharing.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PigSharing.Client/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Client/wwwroot/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PigSharing.Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Server/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PigSharing.Server/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/PigSharing.Server/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,7 +240,7 @@
       <workItem from="1722424512953" duration="12792000" />
       <workItem from="1722449377258" duration="9024000" />
       <workItem from="1722465173270" duration="7658000" />
-      <workItem from="1722473359092" duration="1030000" />
+      <workItem from="1722473359092" duration="1841000" />
     </task>
     <task id="LOCAL-00001" summary="Modif pour essayer de comprendre le problème">
       <option name="closed" value="true" />
