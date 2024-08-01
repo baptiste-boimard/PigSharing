@@ -55,19 +55,29 @@ public class ImageService
     }
     
     // Permet d'obtenir les images publiques
-    public async Task<Picture[]> GetPublics()
+    public async Task GetPublics()
     {
         try
         {
-           _stateManager.Publics  = await _client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
+           // _stateManager.Publics  = await _client.GetFromJsonAsync<Picture[]>("/api/picture/getallpublics");
+           var response  = await _client.GetAsync("/api/picture/getallpublics");
+           
+           // Console.WriteLine(response);
 
-           foreach (var picture in _stateManager.Publics)
-           {
-               Console.WriteLine($"{picture.Created}");
-           }
-           Console.WriteLine();
+           var responseString = await response.Content.ReadAsStringAsync();
+           
+           // Console.WriteLine(responseString);
+           
+           
+           _stateManager.Publics = await response.Content.ReadFromJsonAsync<Picture[]>();
+           
 
-           return _stateManager.Publics;
+           // foreach (var picture in _stateManager.Publics)
+           // {
+           //     Console.WriteLine($"{picture.Created}");
+           // }
+           // Console.WriteLine();
+
         }
         catch (Exception e)
         {

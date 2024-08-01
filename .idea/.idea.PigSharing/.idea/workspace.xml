@@ -57,10 +57,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Launch Settings Profile.PigSharing.Client: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.PigSharing.Client: http.executor": "Run",
+    ".NET Launch Settings Profile.PigSharing.Client: http.executor": "Debug",
     ".NET Launch Settings Profile.PigSharing.Client: https.executor": "Debug",
     ".NET Launch Settings Profile.PigSharing.Server: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.PigSharing.Server: http.executor": "Run",
+    ".NET Launch Settings Profile.PigSharing.Server: http.executor": "Debug",
     ".NET Launch Settings Profile.PigSharing.Server: https.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
@@ -233,7 +233,7 @@
       <workItem from="1722372007345" duration="12165000" />
       <workItem from="1722424512953" duration="12792000" />
       <workItem from="1722449377258" duration="9024000" />
-      <workItem from="1722465173270" duration="5620000" />
+      <workItem from="1722465173270" duration="6745000" />
     </task>
     <task id="LOCAL-00001" summary="Modif pour essayer de comprendre le problème">
       <option name="closed" value="true" />
@@ -270,13 +270,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
-          <line>63</line>
+          <line>74</line>
           <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
             <startOffsets>
-              <option value="1945" />
+              <option value="2331" />
             </startOffsets>
             <endOffsets>
-              <option value="1991" />
+              <option value="2377" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />
@@ -312,27 +312,52 @@
           <line>61</line>
           <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
             <startOffsets>
-              <option value="1835" />
+              <option value="1827" />
             </startOffsets>
             <endOffsets>
-              <option value="1932" />
+              <option value="1924" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/PigSharing.Client/Pages/Home.razor</url>
-          <line>149</line>
-          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Pages\Home.razor" isMultiMethodBreakpoint="true">
-            <option name="multiMethodBreakpoint" value="true" />
+          <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
+          <line>64</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
             <startOffsets>
-              <option value="-1" />
+              <option value="2029" />
             </startOffsets>
             <endOffsets>
-              <option value="-1" />
+              <option value="2057" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="5" />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
+          <line>71</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
+            <startOffsets>
+              <option value="2228" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2306" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/PigSharing.Client/Logic/ImageService.cs</url>
+          <line>68</line>
+          <properties documentPath="E:\Projets\PigSharing\PigSharing.Client\Logic\ImageService.cs" containingFunctionPresentation="Method 'GetPublics'">
+            <startOffsets>
+              <option value="2158" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2192" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
